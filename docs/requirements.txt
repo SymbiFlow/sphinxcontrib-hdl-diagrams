@@ -1,0 +1,4 @@
+docutils
+sphinx
+sphinx-autobuild
+sphinxcontrib-napoleon

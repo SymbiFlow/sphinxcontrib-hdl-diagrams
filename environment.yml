@@ -1,0 +1,12 @@
+name: v2x-docs
+channels:
+- conda-forge
+- defaults
+dependencies:
+- python=3.7
+- pip
+- yosys
+- npm
+- nodejs
+- pip:                            # Packages installed from PyPI
+  - -r file:requirements.txt
