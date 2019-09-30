@@ -1,15 +1,15 @@
-sphinx-verilog
+sphinx-verilog-diagrams
 ==============
 
-[![PyPI](https://img.shields.io/pypi/v/sphinx-verilog.svg)](https://pypi.python.org/pypi/sphinx-verilog)
-[![PyPI version](https://img.shields.io/pypi/pyversions/sphinx-verilog.svg)](https://pypi.python.org/pypi/sphinx-verilog)
-[![Documentation](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://mithro.github.io/sphinx-verilog)
-[![Build Status](https://travis-ci.org/mithro/sphinx-verilog.svg?branch=master)](https://travis-ci.org/mithro/sphinx-verilog)
-[![codecov](https://codecov.io/gh/mithro/sphinx-verilog/branch/master/graph/badge.svg)](https://codecov.io/gh/mithro/sphinx-verilog)
+[![PyPI](https://img.shields.io/pypi/v/sphinx-verilog-diagrams.svg)](https://pypi.python.org/pypi/sphinx-verilog-diagrams)
+[![PyPI version](https://img.shields.io/pypi/pyversions/sphinx-verilog-diagrams.svg)](https://pypi.python.org/pypi/sphinx-verilog-diagrams)
+[![Documentation](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://mithro.github.io/sphinx-verilog-diagrams)
+[![Build Status](https://travis-ci.org/mithro/sphinx-verilog-diagrams.svg?branch=master)](https://travis-ci.org/mithro/sphinx-verilog-diagrams)
+[![codecov](https://codecov.io/gh/mithro/sphinx-verilog-diagrams/branch/master/graph/badge.svg)](https://codecov.io/gh/mithro/sphinx-verilog-diagrams)
 
 --------------------------------------------------------------------------------
 
-sphinx-verilog is an extension to Sphinx to make it easier to write nice
+sphinx-verilog-diagrams is an extension to Sphinx to make it easier to write nice
 documentation from Verilog files.
 
 It primarily uses Yosys to do the Verilog reading.
@@ -19,13 +19,13 @@ It primarily uses Yosys to do the Verilog reading.
 Python 3.5+ is required.
 
 ```
-pip install sphinx-verilog
+pip install sphinx-verilog-diagrams
 ```
 
 Or,
 
 ```
-python3 -m pip install sphinx-verilog
+python3 -m pip install sphinx-verilog-diagrams
 ```
 
 ### Sphinx Integration
@@ -62,7 +62,8 @@ conda XXXX
 ```rst
 
 .. verilog-diagram:: file.v
-   :type:
+   :type: XXXXX
+   :module: XXXX
    :flatten:
 
 ```
@@ -73,9 +74,12 @@ Verilog Diagram Types;
  * `yosys-aig` - Verilog file run through `aigmap` before image is generated directly in Yosys.
  * `netlistsvg` - Render output with [netlistsvg]()
 
+`:module:` - Which module to diagram.
+
 `:flatten:` - Use the Yosys `flatten` command before generating the image.
 
+`
 
 ## Licence
 
-[Apache 2.0](https://github.com/mithro/sphinx-verilog/blob/master/LICENSE)
+[Apache 2.0](LICENSE)

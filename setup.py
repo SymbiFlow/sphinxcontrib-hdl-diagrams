@@ -37,6 +37,4 @@ setup(
         'Topic :: Text Processing',
     ],
     install_requires=install_requires,
-    test_suite='tests',
-    tests_require=test_requirements,
 )
