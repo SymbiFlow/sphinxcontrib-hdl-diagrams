@@ -1,5 +1,5 @@
-sphinx-verilog-diagrams
-==============
+sphinxcontrib-verilog-diagrams
+==============================
 
 [![PyPI](https://img.shields.io/pypi/v/sphinx-verilog-diagrams.svg)](https://pypi.python.org/pypi/sphinx-verilog-diagrams)
 [![PyPI version](https://img.shields.io/pypi/pyversions/sphinx-verilog-diagrams.svg)](https://pypi.python.org/pypi/sphinx-verilog-diagrams)
@@ -8,6 +8,8 @@ sphinx-verilog-diagrams
 [![codecov](https://codecov.io/gh/mithro/sphinx-verilog-diagrams/branch/master/graph/badge.svg)](https://codecov.io/gh/mithro/sphinx-verilog-diagrams)
 
 --------------------------------------------------------------------------------
+
+Sphinx Extension which generates various types of diagrams from Verilog code.
 
 sphinx-verilog-diagrams is an extension to Sphinx to make it easier to write nice
 documentation from Verilog files.
