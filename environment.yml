@@ -10,3 +10,4 @@ dependencies:
 - nodejs
 - pip:                            # Packages installed from PyPI
   - -r file:requirements.txt
+  - .

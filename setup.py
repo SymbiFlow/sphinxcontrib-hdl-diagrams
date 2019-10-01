@@ -16,13 +16,13 @@ with open(readme_file) as f:
 install_requires = ['docutils']
 
 setup(
-    name='sphinx-verilog-diagrams',
+    name='sphinxcontrib-verilog-diagrams',
     version='0.0',
     description='Generate diagrams from Verilog in Sphinx.',
     long_description=readme,
     author="Tim 'mithro' Ansell",
     author_email='me@mith.ro',
-    url='https://github.com/mithro/sphinx-verilog-diagrams',
+    url='https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams',
     py_modules=['sphinx_verilog_diagrams'],
     license="Apache 2.0",
     keywords='Verilog sphinx sphinx-extension netlistsvg FPGA',
