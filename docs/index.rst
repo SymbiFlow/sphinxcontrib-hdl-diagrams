@@ -7,11 +7,6 @@ Single DFF
 .. literalinclude:: verilog/dff.v
    :language: verilog
 
-Default Diagram
-~~~~~~~~~~~~~~~
-
-.. verilog-diagram:: verilog/dff.v
-
 Yosys BlackBox Diagram
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -28,7 +23,7 @@ NetlistSVG Diagram
 ~~~~~~~~~~~~~~~~~~
 
 .. verilog-diagram:: verilog/dff.v
-   :type: yosys-aig
+   :type: netlistsvg
 
 Combinational Full Adder
 ------------------------
@@ -36,8 +31,26 @@ Combinational Full Adder
 .. literalinclude:: verilog/adder.v
    :language: verilog
 
-Default Diagram
-~~~~~~~~~~~~~~~
+Yosys BlackBox Diagram
+~~~~~~~~~~~~~~~~~~~~~~
 
 .. verilog-diagram:: verilog/adder.v
+   :type: yosys-bb
+   :module: ADDER
+
+
+Yosys AIG Diagram
+~~~~~~~~~~~~~~~~~
+
+.. verilog-diagram:: verilog/adder.v
+   :type: yosys-aig
+   :module: ADDER
+
+
+NetlistSVG Diagram
+~~~~~~~~~~~~~~~~~~
+
+.. verilog-diagram:: verilog/adder.v
+   :type: netlistsvg
+   :module: ADDER
 

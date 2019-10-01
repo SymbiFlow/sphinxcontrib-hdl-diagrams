@@ -35,7 +35,7 @@ In your conf.py, add the following lines.
 ```python
 extensions = [
     ...,
-    'sphinx_verilog',
+    'sphinx_verilog_diagrams',
 ]
 ```
 

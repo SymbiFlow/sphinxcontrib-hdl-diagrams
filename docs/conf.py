@@ -38,7 +38,7 @@ extensions = [
     'sphinx.ext.imgmath',
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
-    'sphinx_verilog',
+    'sphinx_verilog_diagrams',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
