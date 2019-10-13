@@ -185,8 +185,18 @@ prep -top {top} {flatten}; cd {top}; show -format {fmt} -prefix {oprefix}
     print('Output file created: {}'.format(opath))
 
 
-def run_netlistsvg():
-    "node netlistsvg src_json -o out_svg --skin {skin}"
+def run_netlistsvg(ipath, opath, skin=None):
+    assert path.exists(ipath), 'Input file missing: {}'.format(ipath)
+    assert not path.exists(opath), 'Output file exists: {}'.format(opath)
+
+    netlistsvg_cmd = "netlistsvg {ipath} -o {opath}".format(ipath=ipath, opath=opath)
+    if skin:
+        netlistsvg_cmd += " --skin {skin}".format(skin=skin)
+    subprocess.check_output(netlistsvg_cmd, shell=True)
+
+    assert path.exists(opath), 'Output file {} was not created!'.format(opath)
+    print('netlistsvg - Output file created: {}'.format(opath))
+
 
 def diagram_netlistsvg(ipath, opath, module='top', flatten=False):
     assert path.exists(ipath), 'Input file missing: {}'.format(ipath)
@@ -210,7 +220,9 @@ def diagram_netlistsvg(ipath, opath, module='top', flatten=False):
 prep -top {top} {flatten}; cd {top}; write_json {ojson}
 """.format(top=module, flatten=flatten, ojson=ojson).strip())
     assert path.exists(ojson), 'Output file {} was not created!'.format(ojson)
-    print('Output file created: {}'.format(ojson))
+
+    run_netlistsvg(ojson, opath)
+    print('netlistsvg - Output file created: {}'.format(ojson))
 
 
 def render_diagram(self, code, options, format):

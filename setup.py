@@ -23,7 +23,7 @@ setup(
     author="Tim 'mithro' Ansell",
     author_email='me@mith.ro',
     url='https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams',
-    py_modules=['sphinx_verilog_diagrams'],
+    py_modules=['sphinxcontrib_verilog_diagrams'],
     license="Apache 2.0",
     keywords='Verilog sphinx sphinx-extension netlistsvg FPGA',
     classifiers=[
