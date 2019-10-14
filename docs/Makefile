@@ -5,8 +5,8 @@ MAKEDIR := $(dir $(lastword $(MAKEFILE_LIST)))
 
 # You can set these variables from the command line.
 SPHINXOPTS      =
-SPHINXBUILD     = [ -e venv/bin/activate ] && source venv/bin/activate; sphinx-build
-SPHINXAUTOBUILD = [ -e venv/bin/activate ] && source venv/bin/activate; sphinx-autobuild
+SPHINXBUILD     = [ -e conda/bin/activate ] && source conda/bin/activate; sphinx-build
+SPHINXAUTOBUILD = [ -e conda/bin/activate ] && source conda/bin/activate; sphinx-autobuild
 SPHINXPROJ      = SphinxVerilog
 SOURCEDIR       = .
 BUILDDIR        = _build
@@ -20,12 +20,21 @@ livehtml:
 
 .PHONY: help livehtml Makefile
 
-venv:
-	rm -rf venv
-	virtualenv --python=python3 venv
-	source venv/bin/activate; pip install -r requirements.txt
 
-.PHONY: venv
+conda/Miniconda3-latest-Linux-x86_64.sh:
+	mkdir conda
+	wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O conda/Miniconda3-latest-Linux-x86_64.sh
+	chmod a+x conda/Miniconda3-latest-Linux-x86_64.sh
+
+conda:
+	rm -rf conda
+	make conda/Miniconda3-latest-Linux-x86_64.sh
+	./conda/Miniconda3-latest-Linux-x86_64.sh -p $(PWD)/conda -b -f
+	source conda/bin/activate; conda config --system --add envs_dirs $(PWD)/conda/envs
+	source conda/bin/activate; conda config --system --add pkgs_dirs $(PWD)/conda/pkgs
+	source conda/bin/activate; conda env update --name base --file ../environment.yml
+
+.PHONY: conda
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
