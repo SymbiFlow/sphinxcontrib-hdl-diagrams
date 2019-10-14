@@ -54,3 +54,31 @@ NetlistSVG Diagram
    :type: netlistsvg
    :module: ADDER
 
+
+NetlistSVG Demos
+----------------
+
+.. verilog-diagram:: verilog/carry4-bits.v
+   :type: netlistsvg
+   :module: CARRY4
+   :caption: carry4-bits.v
+
+
+.. verilog-diagram:: verilog/carry4-whole.v
+   :type: netlistsvg
+   :module: CARRY4
+   :caption: carry4-whole.v
+
+
+.. verilog-diagram:: verilog/muxcy.v
+   :type: netlistsvg
+   :caption: muxcy.v
+   :module: MUXCY
+
+
+.. verilog-diagram:: verilog/xorcy.v
+   :type: netlistsvg
+   :caption: xorcy.v
+   :module: XORCY
+
+
