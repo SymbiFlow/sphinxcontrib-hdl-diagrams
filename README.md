@@ -11,23 +11,25 @@ sphinxcontrib-verilog-diagrams
 
 Sphinx Extension which generates various types of diagrams from Verilog code.
 
-sphinx-verilog-diagrams is an extension to Sphinx to make it easier to write nice
-documentation from Verilog files.
+[sphinxcontrib-verilog-diagrams](https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams)
+is an extension to Sphinx to make it easier to write nice documentation from
+Verilog files.
 
-It primarily uses Yosys to do the Verilog reading.
+It primarily uses [Yosys](https://github.com/YosysHQ/yosys) to do the Verilog
+reading.
 
 ## Installation
 
 Python 3.5+ is required.
 
 ```
-pip install sphinx-verilog-diagrams
+pip install sphinxcontrib-verilog-diagrams
 ```
 
 Or,
 
 ```
-python3 -m pip install sphinx-verilog-diagrams
+python3 -m pip install sphinxcontrib-verilog-diagrams
 ```
 
 ### Sphinx Integration
@@ -37,7 +39,7 @@ In your conf.py, add the following lines.
 ```python
 extensions = [
     ...,
-    'sphinx_verilog_diagrams',
+    'sphinxcontrib_verilog_diagrams',
 ]
 ```
 
@@ -74,13 +76,12 @@ Verilog Diagram Types;
 
  * `yosys-blackbox` - Netlist rendered by Yosys.
  * `yosys-aig` - Verilog file run through `aigmap` before image is generated directly in Yosys.
- * `netlistsvg` - Render output with [netlistsvg]()
+ * `netlistsvg` - Render output with [netlistsvg](https://github.com/nturley/netlistsvg)
 
 `:module:` - Which module to diagram.
 
 `:flatten:` - Use the Yosys `flatten` command before generating the image.
 
-`
 
 ## Licence
 
