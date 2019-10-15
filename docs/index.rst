@@ -15,12 +15,17 @@ RST Directive
 
    .. literalinclude:: verilog/dff.v
       :language: verilog
+      :linenos:
+      :caption: verilog/dff.v
 
 Result
 ++++++
 
 .. literalinclude:: verilog/dff.v
    :language: verilog
+   :linenos:
+   :caption: verilog/dff.v
+
 
 Yosys BlackBox Diagram
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -61,6 +66,7 @@ Result
 .. verilog-diagram:: verilog/dff.v
    :type: yosys-aig
 
+
 NetlistSVG Diagram
 ~~~~~~~~~~~~~~~~~~
 
@@ -80,6 +86,7 @@ Result
 .. verilog-diagram:: verilog/dff.v
    :type: netlistsvg
 
+
 Combinational Full Adder
 ------------------------
 
@@ -94,6 +101,8 @@ RST Directive
 
    .. literalinclude:: verilog/adder.v
       :language: verilog
+      :linenos:
+      :caption: verilog/adder.v
 
 
 Result
@@ -101,6 +110,9 @@ Result
 
 .. literalinclude:: verilog/adder.v
    :language: verilog
+   :linenos:
+   :caption: verilog/adder.v
+
 
 Yosys BlackBox Diagram
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -179,6 +191,8 @@ Verilog Code
 
 .. literalinclude:: verilog/carry4-bits.v
    :language: verilog
+   :linenos:
+   :caption: verilog/carry4-bits.v
 
 
 RST Directive
@@ -209,6 +223,8 @@ Verilog Code
 
 .. literalinclude:: verilog/carry4-whole.v
    :language: verilog
+   :linenos:
+   :caption: verilog/carry4-whole.v
 
 
 RST Directive
@@ -238,6 +254,8 @@ Verilog Code
 
 .. literalinclude:: verilog/muxcy.v
    :language: verilog
+   :linenos:
+   :caption: verilog/muxcy.v
 
 
 RST Directive
@@ -267,6 +285,8 @@ Verilog Code
 
 .. literalinclude:: verilog/xorcy.v
    :language: verilog
+   :linenos:
+   :caption: verilog/xorcy.v
 
 
 RST Directive
