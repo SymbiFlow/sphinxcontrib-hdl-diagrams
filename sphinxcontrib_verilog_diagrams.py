@@ -140,7 +140,7 @@ class VerilogDiagram(Directive):
         node['code'] = filename
         node['options'] = {}
         node['options']['outname'] = outname
-        node['options']['flatten'] = self.options.get('flatten', False)
+        node['options']['flatten'] = 'flatten' in self.options
         node['options']['module'] = self.options.get('module', 'top')
         node['options']['type'] = self.options.get('type', 'netlistsvg')
 
@@ -158,7 +158,8 @@ class VerilogDiagram(Directive):
 
 
 def run_yosys(src, cmd):
-    ycmd = "yosys -p '{cmd}' {src}".format(src=src, cmd=cmd),
+    ycmd = "yosys -p '{cmd}' {src}".format(src=src, cmd=cmd)
+    print("Running yosys:", ycmd)
     subprocess.check_output(ycmd, shell=True)
 
 

@@ -1,6 +1,15 @@
 Sphinx Verilog Diagrams
 =======================
 
+sphinx-verilog-diagrams is an extension to Sphinx to make it easier to write
+nice documentation from Verilog files.
+
+You use the `.. verilog-diagram` RST directive to generate various styles of
+diagrams from verilog code.
+
+Usage Examples
+==============
+
 Single DFF
 ----------
 
@@ -183,40 +192,9 @@ Result
 NetlistSVG Demos
 ----------------
 
-CARRY4 Bits
-~~~~~~~~~~~
 
-Verilog Code
-++++++++++++
-
-.. literalinclude:: verilog/carry4-bits.v
-   :language: verilog
-   :linenos:
-   :caption: verilog/carry4-bits.v
-
-
-RST Directive
-+++++++++++++
-
-.. code-block:: rst
-   :linenos:
-
-   .. verilog-diagram:: verilog/carry4-bits.v
-      :type: netlistsvg
-      :module: CARRY4
-      :caption: carry4-bits.v
-
-Result
-++++++
-
-.. verilog-diagram:: verilog/carry4-bits.v
-   :type: netlistsvg
-   :module: CARRY4
-   :caption: carry4-bits.v
-
-
-CARRY4 Whole
-~~~~~~~~~~~~
+CARRY4 defined directly
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Verilog Code
 ++++++++++++
@@ -246,11 +224,18 @@ Result
    :module: CARRY4
    :caption: carry4-whole.v
 
-MUXCY Example
-~~~~~~~~~~~~~
+
+CARRY4 defined by components
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Verilog Code
 ++++++++++++
+
+.. literalinclude:: verilog/carry4-bits.v
+   :language: verilog
+   :linenos:
+   :caption: verilog/carry4-bits.v
+
 
 .. literalinclude:: verilog/muxcy.v
    :language: verilog
@@ -258,8 +243,14 @@ Verilog Code
    :caption: verilog/muxcy.v
 
 
-RST Directive
-+++++++++++++
+.. literalinclude:: verilog/xorcy.v
+   :language: verilog
+   :linenos:
+   :caption: verilog/xorcy.v
+
+
+Bits of CARRY4
+++++++++++++++
 
 .. code-block:: rst
    :linenos:
@@ -269,28 +260,12 @@ RST Directive
       :caption: muxcy.v
       :module: MUXCY
 
-Result
-++++++
 
 .. verilog-diagram:: verilog/muxcy.v
    :type: netlistsvg
    :caption: muxcy.v
    :module: MUXCY
 
-XORCY Example
-~~~~~~~~~~~~~
-
-Verilog Code
-++++++++++++
-
-.. literalinclude:: verilog/xorcy.v
-   :language: verilog
-   :linenos:
-   :caption: verilog/xorcy.v
-
-
-RST Directive
-+++++++++++++
 
 .. code-block:: rst
    :linenos:
@@ -300,10 +275,55 @@ RST Directive
       :caption: xorcy.v
       :module: XORCY
 
-Result
-++++++
 
 .. verilog-diagram:: verilog/xorcy.v
    :type: netlistsvg
    :caption: xorcy.v
    :module: XORCY
+
+
+RST Directive
++++++++++++++
+
+.. code-block:: rst
+   :linenos:
+
+   .. verilog-diagram:: verilog/carry4-bits.v
+      :type: netlistsvg
+      :module: CARRY4
+      :caption: carry4-bits.v without flatten
+
+
+Result
+++++++
+
+.. verilog-diagram:: verilog/carry4-bits.v
+   :type: netlistsvg
+   :module: CARRY4
+   :caption: carry4-bits.v without flatten
+
+
+RST Directive
++++++++++++++
+
+.. code-block:: rst
+   :linenos:
+   :emphasize-lines: 4
+
+   .. verilog-diagram:: verilog/carry4-bits.v
+      :type: netlistsvg
+      :module: CARRY4
+      :flatten:
+      :caption: carry4-bits.v with flatten
+
+
+Result
+++++++
+
+.. verilog-diagram:: verilog/carry4-bits.v
+   :type: netlistsvg
+   :module: CARRY4
+   :flatten:
+   :caption: carry4-bits.v with flatten
+
+
