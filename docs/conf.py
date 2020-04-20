@@ -1,4 +1,13 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+#
+# Copyright (C) 2020  The SymbiFlow Authors.
+#
+# Use of this source code is governed by a ISC-style
+# license that can be found in the LICENSE file or at
+# https://opensource.org/licenses/ISC
+#
+# SPDX-License-Identifier:	ISC
 #
 # Sphinx Verilog documentation build configuration file, created by
 # sphinx-quickstart on Mon Feb  5 11:04:37 2018.
