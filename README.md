@@ -91,7 +91,7 @@ Check out the [examples](https://sphinxcontrib-verilog-diagrams.readthedocs.io/e
 
 Here is a diagram of a 4-bit carry chain.
 
-![4-bit carry chain](diagrams/carry4-flatten.svg)
+![4-bit carry chain](./carry4-flatten.svg)
 
 
 ## Licence
