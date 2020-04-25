@@ -36,6 +36,7 @@ from docutils.parsers.rst import Directive, directives
 from docutils.statemachine import ViewList
 
 import sphinx
+from sphinx.directives.code import LiteralInclude
 from sphinx.errors import SphinxError
 from sphinx.locale import _, __
 from sphinx.util import logging
@@ -101,6 +102,23 @@ def verilog_diagram_name(srcpath, srclineno, verilog_path):
         verilog_path_segments[1:-1] +
         [verilog_file],
     )
+
+
+class NoLicenseInclude(LiteralInclude):
+    def run(self):
+        # type: () -> List[nodes.Node]
+
+        rel_filename, filename = self.env.relfn2path(self.arguments[0])
+        code = open(rel_filename, 'r').read().strip().split('\n')
+        first_line = next(
+            (idx + 3 for idx, line in enumerate(code) if 'SPDX' in line), 1)
+        last_line = len(code)
+        self.options['lines'] = '{}-{}'.format(first_line, last_line)
+
+        try:
+            return LiteralInclude.run(self)
+        except Exception as exc:
+            return [document.reporter.warning(exc, line=self.lineno)]
 
 
 class VerilogDiagram(Directive):
@@ -397,6 +415,7 @@ def setup(app):
                  text=(text_visit_verilog_diagram, None),
                  man=(man_visit_verilog_diagram, None))
     app.add_directive('verilog-diagram', VerilogDiagram)
+    app.add_directive('no-license', NoLicenseInclude)
     app.add_config_value('verilog_diagram_output_format', 'svg', 'html')
     return {'version': '1.0', 'parallel_read_safe': True}
 
