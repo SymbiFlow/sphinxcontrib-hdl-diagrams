@@ -9,14 +9,20 @@ diagrams from verilog code.
 
 The project repository is hosted on `GitHub <https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams>`_.
 
+Most of the time there will be a license header at the top of source code, 
+which we will never want to show in the documentation. 
+This extension provides the `.. no-license` RST directive which works exactly 
+like the `.. literalinclude` directive, but the `lines` option is overridden
+to only show the lines after the license header.
+
 Usage Examples
 ==============
 
 Single DFF
 ----------
 
-Verilog Code
-~~~~~~~~~~~~
+Verilog Code (without license header)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 RST Directive
 +++++++++++++
@@ -24,7 +30,7 @@ RST Directive
 .. code-block:: rst
    :linenos:
 
-   .. literalinclude:: verilog/dff.v
+   .. no-license:: verilog/dff.v
       :language: verilog
       :linenos:
       :caption: verilog/dff.v
@@ -32,7 +38,7 @@ RST Directive
 Result
 ++++++
 
-.. literalinclude:: verilog/dff.v
+.. no-license:: verilog/dff.v
    :language: verilog
    :linenos:
    :caption: verilog/dff.v
