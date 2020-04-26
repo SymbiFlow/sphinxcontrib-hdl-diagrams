@@ -52,7 +52,7 @@ source_suffix = ['.rst']
 master_doc = 'index'
 
 # General information about the project.
-project = u'Sphinx Verilog'
+project = u'Sphinx Verilog Diagrams'
 copyright = u'2018, SymbiFlow Team'
 author = u'SymbiFlow Team'
 
@@ -61,8 +61,8 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 if not on_rtd:
     html_context = {
         "display_github": True,  # Integrate GitHub
-        "github_user": "mithro",  # Username
-        "github_repo": "python-sphinx-verilog",  # Repo name
+        "github_user": "SymbiFlow",  # Username
+        "github_repo": "sphinxcontrib-verilog-diagrams",  # Repo name
         "github_version": "master",  # Version
         "conf_py_path": "/doc/",
     }
@@ -105,7 +105,7 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = 'sphinx_materialdesign_theme'
+html_theme = 'sphinx_materialdesign_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -114,7 +114,8 @@ todo_include_todos = True
 html_theme_options = {
     # Specify a list of menu in Header.
     # Tuples forms:
-    #  ('Name', 'external url or path of pages in the document', boolean, 'icon name')
+    #  ('Name', 'external url or path of pages in the document', boolean,
+    # 'icon name')
     #
     # Third argument:
     # True indicates an external link.
@@ -126,15 +127,18 @@ html_theme_options = {
     # https://material.io/icons/
     'header_links': [
         ('Home', 'index', False, 'home'),
-        ("GitHub", "https://github.com/SymbiFlow/python-sphinx-verilog", True, 'link')
+        ("GitHub",
+            "https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams",
+            True, 'link')
     ],
 
     # Customize css colors.
     # For details see link.
     # https://getmdl.io/customize/index.html
     #
-    # Values: amber, blue, brown, cyan deep_orange, deep_purple, green, grey, indigo, light_blue,
-    #         light_green, lime, orange, pink, purple, red, teal, yellow(Default: indigo)
+    # Values: amber, blue, brown, cyan deep_orange, deep_purple, green, grey,
+    #         indigo, light_blue, light_green, lime, orange, pink, purple,
+    #         red, teal, yellow(Default: indigo)
     'primary_color':
     'deep_purple',
     # Values: Same as primary_color. (Default: pink)
@@ -187,7 +191,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'sphinx-verilog'
+htmlhelp_basename = 'sphinxcontrib-verilog-diagrams'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -214,8 +218,8 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (
-        master_doc, 'SphinxVerilog.tex', u'Sphinx Verilog Documentation',
-        u'SymbiFlow Team', 'manual'),
+        master_doc, 'SphinxVerilogDiagrams.tex',
+        u'Sphinx Verilog Diagram Documentation', u'SymbiFlow Team', 'manual'),
 ]
 
 # -- Options for manual page output ---------------------------------------
@@ -223,7 +227,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'sphinx-verilog', u'Sphinx Verilog Documentation', [author], 1)
+    (master_doc, 'sphinx-verilog', u'Sphinx Verilog Diagrams Documentation',
+        [author], 1)
 ]
 
 # -- Options for Texinfo output -------------------------------------------
@@ -233,8 +238,10 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (
-        master_doc, 'SphinxVerilog', u'Sphinx Verilog Documentation', author,
-        'SphinxVerilog', 'One line description of project.', 'Miscellaneous'),
+        master_doc, 'SphinxVerilogDiagrams',
+        u'Sphinx Verilog Diagrams Documentation', author,
+        'SphinxVerilogDiagrams', 'One line description of project.',
+        'Miscellaneous'),
 ]
 
 # Example configuration for intersphinx: refer to the Python standard library.

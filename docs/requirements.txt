@@ -1,3 +1,5 @@
+sphinx_materialdesign_theme
+
 docutils
 sphinx
 sphinx-autobuild
