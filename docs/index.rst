@@ -15,6 +15,8 @@ This extension provides the `.. no-license` RST directive which works exactly
 like the `.. literalinclude` directive, but the `lines` option is overridden
 to only show the lines after the license header.
 
+The project repository is hosted on `GitHub <https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams>`_.
+
 Usage Examples
 ==============
 
