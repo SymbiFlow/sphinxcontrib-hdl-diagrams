@@ -3,7 +3,7 @@ sphinxcontrib-verilog-diagrams
 
 [![PyPI](https://img.shields.io/pypi/v/sphinx-verilog-diagrams.svg)](https://pypi.python.org/pypi/sphinx-verilog-diagrams)
 [![PyPI version](https://img.shields.io/pypi/pyversions/sphinx-verilog-diagrams.svg)](https://pypi.python.org/pypi/sphinx-verilog-diagrams)
-[![Documentation](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://mithro.github.io/sphinx-verilog-diagrams)
+[![Documentation](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://sphinxcontrib-verilog-diagrams.readthedocs.io/en/latest/)
 [![Build Status](https://travis-ci.org/mithro/sphinx-verilog-diagrams.svg?branch=master)](https://travis-ci.org/mithro/sphinx-verilog-diagrams)
 [![codecov](https://codecov.io/gh/mithro/sphinx-verilog-diagrams/branch/master/graph/badge.svg)](https://codecov.io/gh/mithro/sphinx-verilog-diagrams)
 

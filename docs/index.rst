@@ -7,6 +7,8 @@ nice documentation from Verilog files.
 You use the `.. verilog-diagram` RST directive to generate various styles of
 diagrams from verilog code.
 
+The project repository is hosted on `GitHub <https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams>`_.
+
 Usage Examples
 ==============
 
