@@ -110,9 +110,13 @@ class NoLicenseInclude(LiteralInclude):
 
         rel_filename, filename = self.env.relfn2path(self.arguments[0])
         code = open(rel_filename, 'r').read().strip().split('\n')
+
         first_line = next(
-            (idx + 3 for idx, line in enumerate(code) if 'SPDX' in line), 1)
+            (idx for idx, line in enumerate(code) if 'SPDX' in line), 1)
+        if first_line > 1:
+            first_line += 3 if code[first_line][1] == '*' else 2
         last_line = len(code)
+
         self.options['lines'] = '{}-{}'.format(first_line, last_line)
 
         try:
