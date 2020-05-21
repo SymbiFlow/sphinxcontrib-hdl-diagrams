@@ -61,7 +61,10 @@ conda XXXX
 
  * `netlistsvg`
 
-## New Directives
+## Usage
+
+The `verilog-diagram` RST directive can be used to generate a diagram from Verilog code and include it in your documentation.
+Check out the [examples](https://sphinxcontrib-verilog-diagrams.readthedocs.io/en/latest/) to see how to use it.
 
 ```rst
 
@@ -72,7 +75,9 @@ conda XXXX
 
 ```
 
-Verilog Diagram Types;
+### Options
+
+`:type:` - Verilog Diagram Types;
 
  * `yosys-blackbox` - Netlist rendered by Yosys.
  * `yosys-aig` - Verilog file run through `aigmap` before image is generated directly in Yosys.
@@ -81,6 +86,12 @@ Verilog Diagram Types;
 `:module:` - Which module to diagram.
 
 `:flatten:` - Use the Yosys `flatten` command before generating the image.
+
+### Example
+
+Here is a diagram of a 4-bit carry chain.
+
+![4-bit carry chain](./carry4-flatten.svg)
 
 
 ## Licence
