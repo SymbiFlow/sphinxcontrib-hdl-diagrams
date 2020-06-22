@@ -1,4 +1,4 @@
-name: v2x-docs
+name: sphinxcontrib-verilog-diagrams
 channels:
 - symbiflow
 - conda-forge
