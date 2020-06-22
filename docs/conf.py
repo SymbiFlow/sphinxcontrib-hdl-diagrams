@@ -228,7 +228,7 @@ texinfo_documents = [
     (
         master_doc, 'SphinxVerilogDiagrams',
         u'Sphinx Verilog Diagrams Documentation', author,
-        'SphinxVerilogDiagrams', 'One line description of project.',
+        'SphinxVerilogDiagrams', 'Sphinx Extension which generates various types of diagrams from Verilog code.',
         'Miscellaneous'),
 ]
 
