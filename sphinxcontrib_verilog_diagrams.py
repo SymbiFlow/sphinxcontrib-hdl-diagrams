@@ -257,7 +257,7 @@ def diagram_netlistsvg(ipath, opath, module='top', flatten=False):
     run_yosys(
         src=ipath,
         cmd = """\
-prep -top {top} {flatten}; cd {top}; write_json -compat-int {ojson}
+prep -top {top} {flatten}; cd {top}; write_json {ojson}
 """.format(top=module, flatten=flatten, ojson=ojson).strip())
     assert path.exists(ojson), 'Output file {} was not created!'.format(ojson)
 
