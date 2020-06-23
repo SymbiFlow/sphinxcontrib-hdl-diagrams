@@ -20,10 +20,9 @@
 import sys
 from os import path
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup, find_packages
+
+from sphinxcontrib_verilog_diagrams import __version__
 
 readme_file = path.join(path.dirname(path.abspath(__file__)), 'README.md')
 with open(readme_file) as f:
@@ -33,20 +32,22 @@ install_requires = ['docutils']
 
 setup(
     name='sphinxcontrib-verilog-diagrams',
-    version='0.0',
+    version=__version__,
     description='Generate diagrams from Verilog in Sphinx.',
     long_description=readme,
+    long_description_content_type="text/markdown",
     author="Tim 'mithro' Ansell",
     author_email='me@mith.ro',
     url='https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams',
-    py_modules=['sphinxcontrib_verilog_diagrams'],
+    packages=find_packages(),
     license="Apache 2.0",
     keywords='Verilog sphinx sphinx-extension netlistsvg FPGA',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Sphinx :: Extension',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache 2.0',
+        #'License :: OSI Approved :: Apache 2.0',
+        'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',

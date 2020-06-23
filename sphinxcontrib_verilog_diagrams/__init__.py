@@ -48,6 +48,13 @@ if False:
     from typing import Any, Dict, List, Tuple  # NOQA
     from sphinx.application import Sphinx  # NOQA
 
+
+try:
+    from .version import __version__
+except ImportError:
+    __version__ = "unknown"
+
+
 logger = logging.getLogger(__name__)
 
 
