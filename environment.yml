@@ -1,4 +1,4 @@
-name: v2x-docs
+name: sphinxcontrib-verilog-diagrams
 channels:
 - symbiflow
 - conda-forge
@@ -7,9 +7,10 @@ dependencies:
 - python=3.7
 - pip
 - yosys
+- graphviz      # Needed for dot
 - nodejs
 - netlistsvg
-- pip:                            # Packages installed from PyPI
+- pip:          # Packages installed from PyPI
   - -r file:requirements.txt
   - -r file:docs/requirements.txt
   - .
