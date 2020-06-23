@@ -12,11 +12,10 @@ sphinxcontrib-verilog-diagrams
 Sphinx Extension which generates various types of diagrams from Verilog code.
 
 [sphinxcontrib-verilog-diagrams](https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams)
-is an extension to Sphinx to make it easier to write nice documentation from
-Verilog files.
+is a Sphinx extension to make it easier to write nice documentation from
+Verilog files. It primarily uses [Yosys](https://github.com/YosysHQ/yosys) to do the Verilog reading.
 
-It primarily uses [Yosys](https://github.com/YosysHQ/yosys) to do the Verilog
-reading.
+Check out the [documentation](https://sphinxcontrib-verilog-diagrams.readthedocs.io/en/latest) for examples.
 
 ## Installation
 
