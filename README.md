@@ -42,7 +42,7 @@ extensions = [
 ]
 ```
 
-## Non-Python Dependencies
+### Non-Python Dependencies
 
 These dependencies can be either installed on your system or install using the
 conda `environment.yml` file with;
@@ -51,16 +51,17 @@ conda `environment.yml` file with;
 conda XXXX
 ```
 
-
-### Required
+#### Required
 
  * [`yosys`](https://github.com/YosysHQ/yosys)
 
-### Optional
+#### Optional
 
  * [`netlistsvg`](https://github.com/nturley/netlistsvg)
 
 ## Usage
+
+### `verilog-diagram`
 
 The `verilog-diagram` RST directive can be used to generate a diagram from Verilog code and include it in your documentation.
 Check out the [examples](https://sphinxcontrib-verilog-diagrams.readthedocs.io/en/latest/) to see how to use it.
@@ -74,6 +75,26 @@ Check out the [examples](https://sphinxcontrib-verilog-diagrams.readthedocs.io/e
 
 ```
 
+#### Options
+
+`:type:` - Verilog Diagram Types;
+
+ * `yosys-blackbox` - Netlist rendered by Yosys.
+ * `yosys-aig` - Verilog file run through `aigmap` before image is generated directly in Yosys.
+ * `netlistsvg` - Render output with [netlistsvg](https://github.com/nturley/netlistsvg)
+
+`:module:` - Which module to diagram.
+
+`:flatten:` - Use the Yosys `flatten` command before generating the image.
+
+#### Example
+
+Here is a diagram of a 4-bit carry chain.
+
+![4-bit carry chain](./carry4-flatten.svg)
+
+### `no-license`
+
 This extension also provides the `no-license` directive which can be used to include code blocks from a file, but omitting the license header
 at the top of the file. It behaves like the `literalinclude` directive, but the `lines` option is overridden to only show the lines after the license header.
 
@@ -86,24 +107,57 @@ at the top of the file. It behaves like the `literalinclude` directive, but the 
 
 ```
 
-### Options
+#### Example
 
-`:type:` - Verilog Diagram Types;
+Here is a comparison between the `literalinclude` and `no-license` directives.
 
- * `yosys-blackbox` - Netlist rendered by Yosys.
- * `yosys-aig` - Verilog file run through `aigmap` before image is generated directly in Yosys.
- * `netlistsvg` - Render output with [netlistsvg](https://github.com/nturley/netlistsvg)
+```rst
+.. literalinclude:: verilog/dff.v
+   :language: verilog
+   :linenos:
+   :caption: verilog/dff.v
+```
 
-`:module:` - Which module to diagram.
+```verilog
+/*
+ * Copyright (C) 2020  The SymbiFlow Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
-`:flatten:` - Use the Yosys `flatten` command before generating the image.
+// Single flip-flip test.
+module top(input clk, input di, output do);
+  always @( posedge clk )
+    do <= di;
+endmodule // top
+```
 
-### Example
+```rst
+.. no-license:: verilog/dff.v
+   :language: verilog
+   :linenos:
+   :caption: verilog/dff.v
+```
 
-Here is a diagram of a 4-bit carry chain.
-
-![4-bit carry chain](./carry4-flatten.svg)
-
+```verilog
+// Single flip-flip test.
+module top(input clk, input di, output do);
+  always @( posedge clk )
+    do <= di;
+endmodule // top
+```
 
 ## Licence
 
