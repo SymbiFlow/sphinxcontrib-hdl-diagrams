@@ -5,6 +5,7 @@ before_install:
 
 script:
     - make test
+    - make build
 
 deploy:
   provider: pypi
