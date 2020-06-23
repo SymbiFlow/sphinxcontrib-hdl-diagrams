@@ -1,19 +1,10 @@
 language: minimal
 
 before_install:
-    - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O conda_installer.sh
-    - bash conda_installer.sh -b -p ~/conda && rm conda_installer.sh
-    - source ~/conda/etc/profile.d/conda.sh
-    - conda env create -f environment.yml
-    - conda activate sphinxcontrib-verilog-diagrams
-    - which yosys
-    - yosys -h
-    - yosys -V
+    - make env
 
 script:
-    - conda activate sphinxcontrib-verilog-diagrams
-    - cd docs
-    - make html
+    - make test
 
 deploy:
   provider: pypi
