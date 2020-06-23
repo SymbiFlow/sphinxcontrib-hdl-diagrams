@@ -20,10 +20,7 @@
 import sys
 from os import path
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup, find_packages
 
 from sphinxcontrib_verilog_diagrams import __version__
 
@@ -41,7 +38,7 @@ setup(
     author="Tim 'mithro' Ansell",
     author_email='me@mith.ro',
     url='https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams',
-    py_modules=['sphinxcontrib_verilog_diagrams'],
+    packages=find_packages(),
     license="Apache 2.0",
     keywords='Verilog sphinx sphinx-extension netlistsvg FPGA',
     classifiers=[
