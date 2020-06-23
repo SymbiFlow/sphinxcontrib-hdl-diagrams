@@ -35,6 +35,7 @@ setup(
     version=__version__,
     description='Generate diagrams from Verilog in Sphinx.',
     long_description=readme,
+    long_description_content_type="text/markdown",
     author="Tim 'mithro' Ansell",
     author_email='me@mith.ro',
     url='https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams',
