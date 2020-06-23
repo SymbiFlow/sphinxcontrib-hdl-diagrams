@@ -19,8 +19,22 @@ ENVIRONMENT_FILE := environment.yml
 
 include third_party/make-env/conda.mk
 
+# Create a version.py file
+VERSION_PY = sphinxcontrib_verilog_diagrams/version.py
+$(VERSION_PY):
+	echo "__version__ = '$$(git describe | sed -e's/v\([0-9]\+\)\.\([0-9]\+\)-\([0-9]\+\)-g[0-9a-f]\+/\1.\2.post\3/')'" > $@
+
+.PHONY: $(VERSION_PY)
+
+version-clean:
+	rm -f $(VERSION_PY)
+
+.PHONY: version-clean
+
+clean: version-clean
+
 # Build and upload commands
-build: | $(CONDA_ENV_PYTHON)
+build: $(VERSION_PY) | $(CONDA_ENV_PYTHON)
 	$(IN_CONDA_ENV) python setup.py sdist bdist_wheel
 
 .PHONY: build

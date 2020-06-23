@@ -25,6 +25,8 @@ try:
 except ImportError:
     from distutils.core import setup
 
+from sphinxcontrib_verilog_diagrams import __version__
+
 readme_file = path.join(path.dirname(path.abspath(__file__)), 'README.md')
 with open(readme_file) as f:
     readme = f.read()
@@ -33,7 +35,7 @@ install_requires = ['docutils']
 
 setup(
     name='sphinxcontrib-verilog-diagrams',
-    version='0.0',
+    version=__version__,
     description='Generate diagrams from Verilog in Sphinx.',
     long_description=readme,
     author="Tim 'mithro' Ansell",
