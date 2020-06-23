@@ -39,6 +39,14 @@ build: $(VERSION_PY) | $(CONDA_ENV_PYTHON)
 
 .PHONY: build
 
+build-clean:
+	rm -rf env/downloads/conda-pkgs
+	rm -rf build dist *.egg-info
+	find -name *.pyc -delete
+	find -name __pycache__ -delete
+
+clean: build-clean
+
 #PYPI_TEST = --repository-url https://test.pypi.org/legacy/
 #PYPI_TEST = --repository testpypi
 
@@ -52,5 +60,7 @@ upload: build | $(CONDA_ENV_PYTHON)
 
 .PHONY: upload
 
-test: | $(CONDA_ENV_PYTHON)
+test: $(VERSION_PY) | $(CONDA_ENV_PYTHON)
 	$(IN_CONDA_ENV) cd docs; make html
+
+.PHONY: test
