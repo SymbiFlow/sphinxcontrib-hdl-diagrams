@@ -14,3 +14,10 @@ script:
     - conda activate sphinxcontrib-verilog-diagrams
     - cd docs
     - make html
+
+deploy:
+  provider: pypi
+  username: __token__
+  distributions: sdist bdist_wheel
+  skip_existing: true
+  edge: true # opt in to dpl v2
