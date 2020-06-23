@@ -74,6 +74,18 @@ Check out the [examples](https://sphinxcontrib-verilog-diagrams.readthedocs.io/e
 
 ```
 
+This extension also provides the `no-license` directive which can be used to include code blocks from a file, but omitting the license header
+at the top of the file. It behaves like the `literalinclude` directive, but the `lines` option is overridden to only show the lines after the license header.
+
+```rst
+
+.. no-license:: verilog/dff.v
+   :language: verilog
+   :linenos:
+   :caption: verilog/dff.v
+
+```
+
 ### Options
 
 `:type:` - Verilog Diagram Types;
