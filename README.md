@@ -59,7 +59,7 @@ conda XXXX
 
 ### Optional
 
- * `netlistsvg`
+ * [`netlistsvg`](https://github.com/nturley/netlistsvg)
 
 ## Usage
 
