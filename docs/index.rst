@@ -7,23 +7,102 @@ nice documentation from Verilog files.
 You use the `.. verilog-diagram` RST directive to generate various styles of
 diagrams from verilog code.
 
-The project repository is hosted on `GitHub <https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams>`_.
-
 Most of the time there will be a license header at the top of source code, 
 which we will never want to show in the documentation. 
-This extension provides the `.. no-license` RST directive which works exactly 
+This extension also provides the `.. no-license` RST directive which works exactly 
 like the `.. literalinclude` directive, but the `lines` option is overridden
 to only show the lines after the license header.
 
 The project repository is hosted on `GitHub <https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams>`_.
 
-Usage Examples
-==============
+Installation
+============
+
+Python 3.5+ is required.
+
+.. code-block:: bash
+
+   pip install sphinxcontrib-verilog-diagrams
+
+Or,
+
+.. code-block:: bash
+
+   python3 -m pip install sphinxcontrib-verilog-diagrams
+
+Sphinx integration
+------------------
+
+In your conf.py, add the following lines.
+
+.. code-block:: python
+   extensions = [
+      ...,
+      'sphinxcontrib_verilog_diagrams',
+   ]
+
+Non-python dependencies
+-----------------------
+These dependencies can either be installed on your system or you can install them using the
+conda `environment.yml <https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams/blob/master/environment.yml>`_ file.
+
+- `yosys <https://github.com/YosysHQ/yosys>`_ (required)
+- `netlistsvg <https://github.com/nturley/netlistsvg>`_ (optional)
+
+Usage
+=====
+
+The `verilog-diagram` RST directive can be used to generate a diagram from Verilog code and include it in your documentation.
+
+.. code-block:: rst
+
+   .. verilog-diagram:: file.v
+      :type: XXXXX
+      :module: XXXX
+      :flatten:
+
+Options
+-------
+
+`:type:` - Verilog Diagram Types;
+
+ * `yosys-blackbox` - Netlist rendered by Yosys.
+ * `yosys-aig` - Verilog file run through `aigmap` before image is generated directly in Yosys.
+ * `netlistsvg` - Render output with `netlistsvg <https://github.com/nturley/netlistsvg>`_
+
+`:module:` - Which module to diagram.
+
+`:flatten:` - Use the Yosys `flatten` command before generating the image.
+
+Examples
+========
 
 Single DFF
 ----------
 
-Verilog Code (without license header)
+Verilog Code Block (with license header)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+RST Directive
++++++++++++++
+
+.. code-block:: rst
+   :linenos:
+
+   .. literalinclude:: verilog/dff.v
+      :language: verilog
+      :linenos:
+      :caption: verilog/dff.v
+
+Result
+++++++
+
+.. literalinclude:: verilog/dff.v
+   :language: verilog
+   :linenos:
+   :caption: verilog/dff.v
+
+Verilog Code Block (without license header)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 RST Directive
