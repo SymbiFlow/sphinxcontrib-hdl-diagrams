@@ -52,7 +52,7 @@ if False:
 try:
     from .version import __version__
 except ImportError:
-    __version__ = "unknown"
+    __version__ = "0.0.dev0"
 
 
 logger = logging.getLogger(__name__)
