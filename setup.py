@@ -32,7 +32,7 @@ if path.exists(version_file):
 else:
     __version__ = "0.0.dev0"
 
-readme_file = path.join(__dir__, 'README.md')
+readme_file = path.join(__dir__, 'README.rst')
 try:
     with open(readme_file) as f:
         readme = f.read()
