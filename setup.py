@@ -25,8 +25,14 @@ from setuptools import setup, find_packages
 from sphinxcontrib_verilog_diagrams import __version__
 
 readme_file = path.join(path.dirname(path.abspath(__file__)), 'README.md')
-with open(readme_file) as f:
-    readme = f.read()
+try:
+    with open(readme_file) as f:
+        readme = f.read()
+except FileNotFoundError as e:
+    import traceback
+    traceback.print_exc()
+    readme = ''
+    __version__ = 'error'
 
 install_requires = ['docutils']
 
