@@ -22,12 +22,13 @@ from os import path
 
 from setuptools import setup, find_packages
 
-try:
-    from sphinxcontrib_verilog_diagrams.version import __version__
-except ImportError:
-    __version__ = 'unknown'
+__dir__ = path.dirname(path.abspath(__file__))
 
-readme_file = path.join(path.dirname(path.abspath(__file__)), 'README.md')
+# Manually import the version number so dependencies don't need to be installed
+# when running setup.py
+exec(open(path.join(__dir__, "sphinxcontrib_verilog_diagrams", "version.py")).read())
+
+readme_file = path.join(__dir__, 'README.md')
 try:
     with open(readme_file) as f:
         readme = f.read()
