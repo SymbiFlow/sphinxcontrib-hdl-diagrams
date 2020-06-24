@@ -36,6 +36,7 @@ Sphinx integration
 In your conf.py, add the following lines.
 
 .. code-block:: python
+
    extensions = [
       ...,
       'sphinxcontrib_verilog_diagrams',
@@ -66,9 +67,9 @@ Options
 
 `:type:` - Verilog Diagram Types;
 
- * `yosys-blackbox` - Netlist rendered by Yosys.
- * `yosys-aig` - Verilog file run through `aigmap` before image is generated directly in Yosys.
- * `netlistsvg` - Render output with `netlistsvg <https://github.com/nturley/netlistsvg>`_
+- `yosys-blackbox` - Netlist rendered by Yosys.
+- `yosys-aig` - Verilog file run through `aigmap` before image is generated directly in Yosys.
+- `netlistsvg` - Render output with `netlistsvg <https://github.com/nturley/netlistsvg>`_
 
 `:module:` - Which module to diagram.
 
@@ -81,7 +82,7 @@ Single DFF
 ----------
 
 Verilog Code Block (with license header)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 RST Directive
 +++++++++++++
@@ -103,7 +104,7 @@ Result
    :caption: verilog/dff.v
 
 Verilog Code Block (without license header)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 RST Directive
 +++++++++++++
