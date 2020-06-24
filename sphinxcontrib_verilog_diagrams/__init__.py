@@ -124,7 +124,11 @@ class NoLicenseInclude(LiteralInclude):
             first_line += 3 if code[first_line][1] == '*' else 2
         last_line = len(code)
 
+        while len(code[first_line - 1]) == 0:
+            first_line += 1
+
         self.options['lines'] = '{}-{}'.format(first_line, last_line)
+        self.options['lineno-start'] = first_line
 
         try:
             return LiteralInclude.run(self)
