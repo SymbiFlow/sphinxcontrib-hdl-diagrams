@@ -1,2 +1,6 @@
+setuptools
+docutils
 sphinx
+
+# Needed to upload to PyPi
 twine

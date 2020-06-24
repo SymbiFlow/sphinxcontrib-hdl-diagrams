@@ -34,7 +34,11 @@ except FileNotFoundError as e:
     readme = ''
     __version__ = 'error'
 
-install_requires = ['docutils']
+install_requires = [
+    'setuptools',
+    'docutils',
+    'sphinx',
+]
 
 setup(
     name='sphinxcontrib-verilog-diagrams',
