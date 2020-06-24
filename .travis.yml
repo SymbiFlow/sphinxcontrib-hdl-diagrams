@@ -7,6 +7,9 @@ script:
     - make test
     - make build
 
+before_deploy:
+    - sudo ln -sf /usr/bin/python3 /usr/bin/python
+
 deploy:
   provider: pypi
   username: __token__
