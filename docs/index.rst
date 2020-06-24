@@ -67,9 +67,9 @@ Options
 
 `:type:` - Verilog Diagram Types;
 
- * `yosys-blackbox` - Netlist rendered by Yosys.
- * `yosys-aig` - Verilog file run through `aigmap` before image is generated directly in Yosys.
- * `netlistsvg` - Render output with `netlistsvg <https://github.com/nturley/netlistsvg>`_
+- `yosys-blackbox` - Netlist rendered by Yosys.
+- `yosys-aig` - Verilog file run through `aigmap` before image is generated directly in Yosys.
+- `netlistsvg` - Render output with `netlistsvg <https://github.com/nturley/netlistsvg>`_
 
 `:module:` - Which module to diagram.
 
