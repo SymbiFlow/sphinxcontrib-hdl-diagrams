@@ -35,7 +35,7 @@ clean: version-clean
 
 # Build and upload commands
 build: $(VERSION_PY) | $(CONDA_ENV_PYTHON)
-	$(IN_CONDA_ENV) python setup.py sdist bdist_wheel
+	$(IN_CONDA_ENV) python setup.py sdist bdist_wheel && twine check dist/*
 
 .PHONY: build
 
