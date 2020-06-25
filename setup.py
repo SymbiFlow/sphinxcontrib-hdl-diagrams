@@ -32,7 +32,7 @@ if path.exists(version_file):
 else:
     __version__ = "0.0.dev0"
 
-readme_file = path.join(__dir__, 'README.md')
+readme_file = path.join(__dir__, 'README.rst')
 try:
     with open(readme_file) as f:
         readme = f.read()
@@ -53,7 +53,7 @@ setup(
     version=__version__,
     description='Generate diagrams from Verilog in Sphinx.',
     long_description=readme,
-    long_description_content_type="text/markdown",
+    long_description_content_type="text/x-rst",
     author="Tim 'mithro' Ansell",
     author_email='me@mith.ro',
     url='https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams',
