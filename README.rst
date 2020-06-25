@@ -78,14 +78,16 @@ Required
 ~~~~~~~~
 
 * |yosys|_
-.. |yosys| replace:: `yosys`
+
+.. |yosys| replace:: ``yosys``
 .. _yosys: https://github.com/YosysHQ/yosys
 
 Optional
 ~~~~~~~~
 
 * |netlistsvg|_
-.. |netlistsvg| replace:: `netlistsvg`
+
+.. |netlistsvg| replace:: ``netlistsvg``
 .. _netlistsvg: https://github.com/nturley/netlistsvg
 
 Usage
