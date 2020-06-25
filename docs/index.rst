@@ -4,19 +4,25 @@ Sphinx Verilog Diagrams
 sphinx-verilog-diagrams is an extension to Sphinx to make it easier to write
 nice documentation from Verilog files.
 
-You use the `.. verilog-diagram` RST directive to generate various styles of
+You use the |verilog-diagram|_ RST directive to generate various styles of
 diagrams from verilog code.
 
 Most of the time there will be a license header at the top of source code, 
-which we will never want to show in the documentation. 
-This extension also provides the `.. no-license` RST directive which works exactly 
+which we might not want to show in the documentation. 
+This extension also provides the |no-license|_ RST directive which works exactly 
 like the `.. literalinclude` directive, but the `lines` option is overridden
 to only show the lines after the license header.
+
+
+.. |verilog-diagram| replace:: `.. verilog-diagram`
+.. _verilog-diagram: #usage
+.. |no-license| replace:: `.. no-license`
+.. _no-license: #verilog-code-block-without-license-header
 
 The project repository is hosted on `GitHub <https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams>`_.
 
 Installation
-============
+------------
 
 Python 3.5+ is required.
 
@@ -31,7 +37,7 @@ Or,
    python3 -m pip install sphinxcontrib-verilog-diagrams
 
 Sphinx integration
-------------------
+~~~~~~~~~~~~~~~~~~
 
 In your conf.py, add the following lines.
 
@@ -43,7 +49,7 @@ In your conf.py, add the following lines.
    ]
 
 Non-python dependencies
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 These dependencies can either be installed on your system or you can install them using the
 conda `environment.yml <https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams/blob/master/environment.yml>`_ file.
 
@@ -51,7 +57,7 @@ conda `environment.yml <https://github.com/SymbiFlow/sphinxcontrib-verilog-diagr
 - `netlistsvg <https://github.com/nturley/netlistsvg>`_ (optional)
 
 Usage
-=====
+-----
 
 The `verilog-diagram` RST directive can be used to generate a diagram from Verilog code and include it in your documentation.
 
@@ -63,7 +69,7 @@ The `verilog-diagram` RST directive can be used to generate a diagram from Veril
       :flatten:
 
 Options
--------
+~~~~~~~
 
 `:type:` - Verilog Diagram Types;
 
@@ -76,16 +82,16 @@ Options
 `:flatten:` - Use the Yosys `flatten` command before generating the image.
 
 Examples
-========
+--------
 
 Single DFF
-----------
+~~~~~~~~~~
 
 Verilog Code Block (with license header)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+++++++++++++++++++++++++++++++++++++++++
 
 RST Directive
-+++++++++++++
+*************
 
 .. code-block:: rst
    :linenos:
@@ -96,7 +102,7 @@ RST Directive
       :caption: verilog/dff.v
 
 Result
-++++++
+******
 
 .. literalinclude:: verilog/dff.v
    :language: verilog
@@ -104,10 +110,10 @@ Result
    :caption: verilog/dff.v
 
 Verilog Code Block (without license header)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+++++++++++++++++++++++++++++++++++++++++
 
 RST Directive
-+++++++++++++
+*************
 
 .. code-block:: rst
    :linenos:
@@ -118,7 +124,7 @@ RST Directive
       :caption: verilog/dff.v
 
 Result
-++++++
+******
 
 .. no-license:: verilog/dff.v
    :language: verilog
@@ -127,10 +133,10 @@ Result
 
 
 Yosys BlackBox Diagram
-~~~~~~~~~~~~~~~~~~~~~~
+++++++++++++++++++++++
 
 RST Directive
-+++++++++++++
+*************
 
 .. code-block:: rst
    :linenos:
@@ -140,17 +146,17 @@ RST Directive
       :type: yosys-bb
 
 Result
-++++++
+******
 
 .. verilog-diagram:: verilog/dff.v
    :type: yosys-bb
 
 
 Yosys AIG Diagram
-~~~~~~~~~~~~~~~~~
++++++++++++++++++
 
 RST Directive
-+++++++++++++
+*************
 
 .. code-block:: rst
    :linenos:
@@ -160,17 +166,17 @@ RST Directive
       :type: yosys-aig
 
 Result
-++++++
+******
 
 .. verilog-diagram:: verilog/dff.v
    :type: yosys-aig
 
 
 NetlistSVG Diagram
-~~~~~~~~~~~~~~~~~~
+++++++++++++++++++
 
 RST Directive
-+++++++++++++
+*************
 
 .. code-block:: rst
    :linenos:
@@ -180,44 +186,44 @@ RST Directive
       :type: netlistsvg
 
 Result
-++++++
+******
 
 .. verilog-diagram:: verilog/dff.v
    :type: netlistsvg
 
 
 Combinational Full Adder
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Verilog Code
-~~~~~~~~~~~~
+++++++++++++
 
 RST Directive
-+++++++++++++
+*************
 
 .. code-block:: rst
    :linenos:
 
-   .. literalinclude:: verilog/adder.v
+   .. no-license:: verilog/adder.v
       :language: verilog
       :linenos:
       :caption: verilog/adder.v
 
 
 Result
-++++++
+******
 
-.. literalinclude:: verilog/adder.v
+.. no-license:: verilog/adder.v
    :language: verilog
    :linenos:
    :caption: verilog/adder.v
 
 
 Yosys BlackBox Diagram
-~~~~~~~~~~~~~~~~~~~~~~
+++++++++++++++++++++++
 
 RST Directive
-+++++++++++++
+*************
 
 .. code-block:: rst
    :linenos:
@@ -228,7 +234,7 @@ RST Directive
       :module: ADDER
 
 Result
-++++++
+******
 
 .. verilog-diagram:: verilog/adder.v
    :type: yosys-bb
@@ -236,10 +242,10 @@ Result
 
 
 Yosys AIG Diagram
-~~~~~~~~~~~~~~~~~
++++++++++++++++++
 
 RST Directive
-+++++++++++++
+*************
 
 .. code-block:: rst
    :linenos:
@@ -250,7 +256,7 @@ RST Directive
       :module: ADDER
 
 Result
-++++++
+******
 
 .. verilog-diagram:: verilog/adder.v
    :type: yosys-aig
@@ -258,10 +264,10 @@ Result
 
 
 NetlistSVG Diagram
-~~~~~~~~~~~~~~~~~~
++++++++++++++++++
 
 RST Directive
-+++++++++++++
+*************
 
 .. code-block:: rst
    :linenos:
@@ -273,30 +279,23 @@ RST Directive
 
 
 Result
-++++++
+******
 
 .. verilog-diagram:: verilog/adder.v
    :type: netlistsvg
    :module: ADDER
 
 NetlistSVG Demos
-----------------
+~~~~~~~~~~~~~~~~
 
 
 CARRY4 defined directly
-~~~~~~~~~~~~~~~~~~~~~~~
++++++++++++++++++++++++
 
-Verilog Code
-++++++++++++
-
-.. literalinclude:: verilog/carry4-whole.v
+.. no-license:: verilog/carry4-whole.v
    :language: verilog
    :linenos:
    :caption: verilog/carry4-whole.v
-
-
-RST Directive
-+++++++++++++
 
 .. code-block:: rst
    :linenos:
@@ -306,9 +305,6 @@ RST Directive
       :module: CARRY4
       :caption: carry4-whole.v
 
-Result
-++++++
-
 .. verilog-diagram:: verilog/carry4-whole.v
    :type: netlistsvg
    :module: CARRY4
@@ -316,31 +312,28 @@ Result
 
 
 CARRY4 defined by components
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+++++++++++++++++++++++++++++
 
-Verilog Code
-++++++++++++
-
-.. literalinclude:: verilog/carry4-bits.v
+.. no-license:: verilog/carry4-bits.v
    :language: verilog
    :linenos:
    :caption: verilog/carry4-bits.v
 
 
-.. literalinclude:: verilog/muxcy.v
+.. no-license:: verilog/muxcy.v
    :language: verilog
    :linenos:
    :caption: verilog/muxcy.v
 
 
-.. literalinclude:: verilog/xorcy.v
+.. no-license:: verilog/xorcy.v
    :language: verilog
    :linenos:
    :caption: verilog/xorcy.v
 
 
-Bits of CARRY4
-++++++++++++++
+MUXCY
+*****
 
 .. code-block:: rst
    :linenos:
@@ -357,6 +350,9 @@ Bits of CARRY4
    :module: MUXCY
 
 
+XORCY
+*****
+
 .. code-block:: rst
    :linenos:
 
@@ -371,9 +367,8 @@ Bits of CARRY4
    :caption: xorcy.v
    :module: XORCY
 
-
-RST Directive
-+++++++++++++
+CARRY4 without flatten
+**********************
 
 .. code-block:: rst
    :linenos:
@@ -384,17 +379,13 @@ RST Directive
       :caption: carry4-bits.v without flatten
 
 
-Result
-++++++
-
 .. verilog-diagram:: verilog/carry4-bits.v
    :type: netlistsvg
    :module: CARRY4
    :caption: carry4-bits.v without flatten
 
-
-RST Directive
-+++++++++++++
+CARRY4 with flatten
+*******************
 
 .. code-block:: rst
    :linenos:
@@ -407,13 +398,9 @@ RST Directive
       :caption: carry4-bits.v with flatten
 
 
-Result
-++++++
-
 .. verilog-diagram:: verilog/carry4-bits.v
    :type: netlistsvg
    :module: CARRY4
    :flatten:
    :caption: carry4-bits.v with flatten
-
 
