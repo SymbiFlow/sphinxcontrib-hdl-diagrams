@@ -365,7 +365,7 @@ def diagram_netlistsvg(ipath, opath, module='top', flatten=False,
 
 
 def nmigen_to_rtlil(fname, oname):
-    subprocess.run([sys.executable, fname, "generate", "-t", "il"], stdout=open(oname, "w"),
+    subprocess.run([sys.executable, fname], stdout=open(oname, "w"),
                     shell=False, check=True)
 
 

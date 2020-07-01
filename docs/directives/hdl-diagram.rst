@@ -26,13 +26,10 @@ Verilog
 nMigen
 ++++++
 
-For `hdl-diagram` to work with nMigen, there must be a call to `nmigen.cli.main`
-with an `Elaboratable` object.
-
 .. no-license:: ../code/nmigen/counter.py
    :language: python
    :linenos:
-   :emphasize-lines: 5,17,19
+   :emphasize-lines: 5,17,18
 
 .. code-block:: rst
    :linenos:
@@ -43,6 +40,17 @@ with an `Elaboratable` object.
 
 .. hdl-diagram:: ../code/nmigen/counter.py
    :type: netlistsvg
+
+.. note::
+
+   As `hdl-diagram` expects the nMigen script to write RTLIL code to stdout,
+   make sure to include the following lines of code.
+
+   .. code-block:: py
+      :linenos:
+
+      from nmigen.back import rtlil
+      print(rtlil.convert(..., ports=[...]))
 
 
 RTLIL
