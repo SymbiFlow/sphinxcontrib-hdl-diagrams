@@ -1,41 +1,43 @@
-sphinxcontrib-verilog-diagrams
+sphinxcontrib-hdl-diagrams
 ==============================
 
 
-.. image:: https://img.shields.io/pypi/v/sphinxcontrib-verilog-diagrams.svg
-   :target: https://pypi.python.org/pypi/sphinxcontrib-verilog-diagrams
+.. image:: https://img.shields.io/pypi/v/sphinxcontrib-hdl-diagrams.svg
+   :target: https://pypi.python.org/pypi/sphinxcontrib-hdl-diagrams
    :alt: PyPI
 
 
-.. image:: https://img.shields.io/pypi/pyversions/sphinxcontrib-verilog-diagrams.svg
-   :target: https://pypi.python.org/pypi/sphinxcontrib-verilog-diagrams
+.. image:: https://img.shields.io/pypi/pyversions/sphinxcontrib-hdl-diagrams.svg
+   :target: https://pypi.python.org/pypi/sphinxcontrib-hdl-diagrams
    :alt: PyPI version
 
 
-.. image:: https://readthedocs.org/projects/sphinxcontrib-verilog-diagrams/badge
-   :target: https://sphinxcontrib-verilog-diagrams.readthedocs.io/en/latest/
+.. image:: https://readthedocs.org/projects/sphinxcontrib-hdl-diagrams/badge
+   :target: https://sphinxcontrib-hdl-diagrams.readthedocs.io/en/latest/
    :alt: Documentation
 
 
-.. image:: https://travis-ci.com/SymbiFlow/sphinxcontrib-verilog-diagrams.svg?branch=master
-   :target: https://travis-ci.com/SymbiFlow/sphinxcontrib-verilog-diagrams
+.. image:: https://travis-ci.com/SymbiFlow/sphinxcontrib-hdl-diagrams.svg?branch=master
+   :target: https://travis-ci.com/SymbiFlow/sphinxcontrib-hdl-diagrams
    :alt: Build Status
 
 
-.. image:: https://codecov.io/gh/SymbiFlow/sphinxcontrib-verilog-diagrams/branch/master/graph/badge.svg
-   :target: https://codecov.io/gh/SymbiFlow/sphinxcontrib-verilog-diagrams
+.. image:: https://codecov.io/gh/SymbiFlow/sphinxcontrib-hdl-diagrams/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/SymbiFlow/sphinxcontrib-hdl-diagrams
    :alt: codecov
 
 
 ----
 
-Sphinx Extension which generates various types of diagrams from Verilog code.
+Sphinx Extension which generates various types of diagrams from HDL code, supporting Verilog,
+nMigen and RTLIL.
 
-`sphinxcontrib-verilog-diagrams <https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams>`_
+`sphinxcontrib-hdl-diagrams <https://github.com/SymbiFlow/sphinxcontrib-hdl-diagrams>`_
 is a Sphinx extension to make it easier to write nice documentation from
-Verilog files. It primarily uses `Yosys <https://github.com/YosysHQ/yosys>`_ to do the Verilog reading.
+HDL source files. It primarily uses `Yosys <https://github.com/YosysHQ/yosys>`_ to read the source files
+and generate the diagrams.
 
-Check out the `documentation <https://sphinxcontrib-verilog-diagrams.readthedocs.io/en/latest>`_ for examples.
+Check out the `documentation <https://sphinxcontrib-hdl-diagrams.readthedocs.io/en/latest>`_ for examples.
 
 Installation
 ------------
@@ -44,13 +46,13 @@ Python 3.5+ is required.
 
 .. code-block::
 
-   pip install sphinxcontrib-verilog-diagrams
+   pip install sphinxcontrib-hdl-diagrams
 
 Or,
 
 .. code-block::
 
-   python3 -m pip install sphinxcontrib-verilog-diagrams
+   python3 -m pip install sphinxcontrib-hdl-diagrams
 
 Sphinx Integration
 ^^^^^^^^^^^^^^^^^^
@@ -61,7 +63,7 @@ In your conf.py, add the following lines.
 
    extensions = [
        ...,
-       'sphinxcontrib_verilog_diagrams',
+       'sphinxcontrib_hdl_diagrams',
    ]
 
 Non-Python Dependencies
@@ -107,15 +109,15 @@ Optional
 Usage
 -----
 
-``verilog-diagram``
+``hdl-diagram``
 ^^^^^^^^^^^^^^^^^^^
 
-The ``verilog-diagram`` RST directive can be used to generate a diagram from Verilog code and include it in your documentation.
-Check out the `examples <https://sphinxcontrib-verilog-diagrams.readthedocs.io/en/latest/>`_ to see how to use it.
+The ``hdl-diagram`` RST directive can be used to generate a diagram from Verilog code and include it in your documentation.
+Check out the `examples <https://sphinxcontrib-hdl-diagrams.readthedocs.io/en/latest/>`_ to see how to use it.
 
 .. code-block:: rst
 
-   .. verilog-diagram:: file.v
+   .. hdl-diagram:: file.v
       :type: XXXXX
       :module: XXXX
       :skin: XXXX
@@ -125,7 +127,7 @@ Check out the `examples <https://sphinxcontrib-verilog-diagrams.readthedocs.io/e
 Options
 ~~~~~~~
 
-``:type:`` - Verilog Diagram Types;
+``:type:`` - HDL Diagram Types;
 
 
 * ``yosys-blackbox`` - Netlist rendered by Yosys.

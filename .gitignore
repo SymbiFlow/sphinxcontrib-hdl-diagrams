@@ -104,4 +104,4 @@ venv.bak/
 .mypy_cache/
 
 # version number
-sphinxcontrib_verilog_diagrams/version.py
+sphinxcontrib_hdl_diagrams/version.py

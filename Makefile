@@ -20,7 +20,7 @@ ENVIRONMENT_FILE := environment.yml
 include third_party/make-env/conda.mk
 
 # Create a version.py file
-VERSION_PY = sphinxcontrib_verilog_diagrams/version.py
+VERSION_PY = sphinxcontrib_hdl_diagrams/version.py
 $(VERSION_PY):
 	echo "__version__ = '$$(git describe | sed -e's/v\([0-9]\+\)\.\([0-9]\+\)-\([0-9]\+\)-g[0-9a-f]\+/\1.\2.post\3/')'" > $@
 

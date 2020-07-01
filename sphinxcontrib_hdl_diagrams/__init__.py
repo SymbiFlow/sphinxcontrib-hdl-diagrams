@@ -18,7 +18,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 """
-sphinx_verilog_diagrams
+sphinx_hdl_diagrams
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 """
@@ -28,6 +28,7 @@ import re
 import codecs
 import posixpath
 import subprocess
+import sys
 
 from os import path
 
@@ -58,12 +59,12 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-class VerilogDiagramError(SphinxError):
-    category = 'VerilogDiagram error'
+class HDLDiagramError(SphinxError):
+    category = 'HDLDiagram error'
 
 
-class verilog_diagram(nodes.General, nodes.Inline, nodes.Element):
-    '''Base class for verilog_diagram node'''
+class hdl_diagram(nodes.General, nodes.Inline, nodes.Element):
+    '''Base class for hdl_diagram node'''
     pass
 
 
@@ -89,25 +90,25 @@ def align_spec(argument):
     return directives.choice(argument, ('left', 'center', 'right'))
 
 
-def verilog_diagram_name(srcpath, srclineno, verilog_path):
+def hdl_diagram_name(srcpath, srclineno, hdl_path):
     srcdir, srcfile = path.split(srcpath)
     srcbase, srcext = path.splitext(srcfile)
 
-    verilog_path = path.normpath(path.join(srcdir, verilog_path))
-    verilog_path = utils.relative_path(None, verilog_path)
-    verilog_path = nodes.reprunicode(verilog_path)
+    hdl_path = path.normpath(path.join(srcdir, hdl_path))
+    hdl_path = utils.relative_path(None, hdl_path)
+    hdl_path = nodes.reprunicode(hdl_path)
 
-    verilog_path_segments = [verilog_path]
-    while verilog_path_segments[0]:
-        a, b = path.split(verilog_path_segments[0])
-        verilog_path_segments[0:1] = [a, b]
+    hdl_path_segments = [hdl_path]
+    while hdl_path_segments[0]:
+        a, b = path.split(hdl_path_segments[0])
+        hdl_path_segments[0:1] = [a, b]
 
-    verilog_file, verilog_ext = path.splitext(verilog_path_segments[-1])
+    hdl_file, hdl_ext = path.splitext(hdl_path_segments[-1])
 
     return '-'.join(
         [srcbase, str(srclineno)] +
-        verilog_path_segments[1:-1] +
-        [verilog_file],
+        hdl_path_segments[1:-1] +
+        [hdl_file],
     )
 
 
@@ -136,9 +137,9 @@ class NoLicenseInclude(LiteralInclude):
             return [document.reporter.warning(exc, line=self.lineno)]
 
 
-class VerilogDiagram(Directive):
+class HDLDiagram(Directive):
     """
-    Directive to insert diagram generated from Verilog code.
+    Directive to insert diagram generated from HDL code.
     """
 
     has_content = True
@@ -173,29 +174,29 @@ class VerilogDiagram(Directive):
         if not self.state.document.settings.file_insertion_enabled:
             raise self.warning('"%s" directive disabled.' % self.name)
 
-        print("verilog-diagram", self)
+        print("hdl-diagram", self)
 
         source = self.state_machine.input_lines.source(
             self.lineno - self.state_machine.input_offset - 1)
 
         if self.arguments:
-            verilog_file = self.arguments[0]
+            hdl_file = self.arguments[0]
 
-            outname = verilog_diagram_name(
-                *self.state_machine.get_source_and_line(), verilog_file)
+            outname = hdl_diagram_name(
+                *self.state_machine.get_source_and_line(), hdl_file)
 
-            # self.state.document.settings.record_dependencies.add(verilog_path)
+            # self.state.document.settings.record_dependencies.add(hdl_path)
 
             env = self.state.document.settings.env
-            argument = search_image_for_language(verilog_file, env)
-            rel_filename, filename = env.relfn2path(verilog_file)
+            argument = search_image_for_language(hdl_file, env)
+            rel_filename, filename = env.relfn2path(hdl_file)
             env.note_dependency(rel_filename)
         else:
             assert False, "TODO!"
             # TODO: ????
-            verilog_diagram_code = '\n'.join(self.content)
+            hdl_diagram_code = '\n'.join(self.content)
 
-        node = verilog_diagram()
+        node = hdl_diagram()
         node['code'] = filename
         node['options'] = {}
         node['options']['outname'] = outname
@@ -363,15 +364,32 @@ def diagram_netlistsvg(ipath, opath, module='top', flatten=False,
     print('netlistsvg - Output file created: {}'.format(ojson))
 
 
+def nmigen_to_rtlil(fname, oname):
+    subprocess.run([sys.executable, fname, "generate", "-t", "il"], stdout=open(oname, "w"),
+                    shell=False, check=True)
+
+
 def render_diagram(self, code, options, format, skin, yosys_script):
     # type: (nodes.NodeVisitor, unicode, Dict, unicode, unicode) -> Tuple[unicode, unicode]
-    """Render verilog_diagram code into a PNG or SVG output file."""
+    """Render hdl code into a PNG or SVG output file."""
 
-    verilog_path = code
+    source_path = code
+    source_fn, source_ext = os.path.splitext(source_path)
 
     fname = '%s.%s' % (options['outname'], format)
     relfn = posixpath.join(self.builder.imgpath, fname)
     outfn = path.join(self.builder.outdir, self.builder.imagedir, fname)
+
+    if source_ext == '.py':
+        module = 'top'
+        ilfn = path.join(self.builder.outdir, self.builder.imagedir, options['outname'] + '.il')
+        nmigen_to_rtlil(source_path, ilfn)
+        source_path = ilfn
+    elif source_ext == '.il' or source_ext == '.v':
+        module = options['module']
+    else:
+        raise HDLDiagramError("hdl_diagram_code file extension must be one of '.v', "
+                            "'.il', or '.py', but is %r" % source_ext)
 
     if path.isfile(outfn):
         print('Exiting file:', outfn)
@@ -417,7 +435,7 @@ def render_diagram(self, code, options, format, skin, yosys_script):
 
 def render_diagram_html(
         self, node, code, options, imgcls=None, alt=None):
-    # type: (nodes.NodeVisitor, verilog_diagram, unicode, Dict, unicode, unicode, unicode) -> Tuple[unicode, unicode]  # NOQA
+    # type: (nodes.NodeVisitor, hdl_diagram, unicode, Dict, unicode, unicode, unicode) -> Tuple[unicode, unicode]  # NOQA
 
     yosys_script = self.builder.config.verilog_diagram_yosys_script
     if yosys_script != 'default' and not path.exists(yosys_script):
@@ -430,11 +448,11 @@ def render_diagram_html(
     format = self.builder.config.verilog_diagram_output_format
     try:
         if format not in ('png', 'svg'):
-            raise VerilogDiagramError("verilog_diagram_output_format must be one of 'png', "
+            raise HDLDiagramError("hdl_diagram_output_format must be one of 'png', "
                                 "'svg', but is %r" % format)
         fname, outfn = render_diagram(self, code, options, format, skin, yosys_script)
-    except VerilogDiagramError as exc:
-        logger.warning('verilog_diagram code %r: ' % code + str(exc))
+    except HDLDiagramError as exc:
+        logger.warning('hdl_diagram code %r: ' % code + str(exc))
         raise nodes.SkipNode
 
     if fname is None:
@@ -459,18 +477,18 @@ def render_diagram_html(
     raise nodes.SkipNode
 
 
-def html_visit_verilog_diagram(self, node):
-    # type: (nodes.NodeVisitor, verilog_diagram) -> None
+def html_visit_hdl_diagram(self, node):
+    # type: (nodes.NodeVisitor, hdl_diagram) -> None
     render_diagram_html(self, node, node['code'], node['options'])
 
 
 def render_diagram_latex(self, node, code, options):
-    # type: (nodes.NodeVisitor, verilog_diagram, unicode, Dict, unicode) -> None
+    # type: (nodes.NodeVisitor, hdl_diagram, unicode, Dict, unicode) -> None
 
     try:
         fname, outfn = render_diagram(self, code, options, 'pdf')
-    except VerilogDiagramError as exc:
-        logger.warning('verilog_diagram code %r: ' % code + str(exc))
+    except HDLDiagramError as exc:
+        logger.warning('hdl_diagram code %r: ' % code + str(exc))
         raise nodes.SkipNode
 
     is_inline = self.is_inline(node)
@@ -496,30 +514,30 @@ def render_diagram_latex(self, node, code, options):
     raise nodes.SkipNode
 
 
-def latex_visit_verilog_diagram(self, node):
-    # type: (nodes.NodeVisitor, verilog_diagram) -> None
+def latex_visit_hdl_diagram(self, node):
+    # type: (nodes.NodeVisitor, hdl_diagram) -> None
     render_diagram_latex(self, node, node['code'], node['options'])
 
 
 def render_diagram_texinfo(self, node, code, options):
-    # type: (nodes.NodeVisitor, verilog_diagram, unicode, Dict, unicode) -> None
+    # type: (nodes.NodeVisitor, hdl_diagram, unicode, Dict, unicode) -> None
     try:
         fname, outfn = render_diagram(self, code, options, 'png')
-    except VerilogDiagramError as exc:
-        logger.warning('verilog_diagram code %r: ' % code + str(exc))
+    except HDLDiagramError as exc:
+        logger.warning('hdl_diagram code %r: ' % code + str(exc))
         raise nodes.SkipNode
     if fname is not None:
-        self.body.append('@image{%s,,,[verilog_diagram],png}\n' % fname[:-4])
+        self.body.append('@image{%s,,,[hdl_diagram],png}\n' % fname[:-4])
     raise nodes.SkipNode
 
 
-def texinfo_visit_verilog_diagram(self, node):
-    # type: (nodes.NodeVisitor, verilog_diagram) -> None
+def texinfo_visit_hdl_diagram(self, node):
+    # type: (nodes.NodeVisitor, hdl_diagram) -> None
     render_diagram_texinfo(self, node, node['code'], node['options'])
 
 
-def text_visit_verilog_diagram(self, node):
-    # type: (nodes.NodeVisitor, verilog_diagram) -> None
+def text_visit_hdl_diagram(self, node):
+    # type: (nodes.NodeVisitor, hdl_diagram) -> None
     if 'alt' in node.attributes:
         self.add_text(_('[diagram: %s]') % node['alt'])
     else:
@@ -527,8 +545,8 @@ def text_visit_verilog_diagram(self, node):
     raise nodes.SkipNode
 
 
-def man_visit_verilog_diagram(self, node):
-    # type: (nodes.NodeVisitor, verilog_diagram) -> None
+def man_visit_hdl_diagram(self, node):
+    # type: (nodes.NodeVisitor, hdl_diagram) -> None
     if 'alt' in node.attributes:
         self.body.append(_('[diagram: %s]') % node['alt'])
     else:
@@ -538,16 +556,16 @@ def man_visit_verilog_diagram(self, node):
 
 def setup(app):
     # type: (Sphinx) -> Dict[unicode, Any]
-    app.add_node(verilog_diagram,
-                 html=(html_visit_verilog_diagram, None),
-                 latex=(latex_visit_verilog_diagram, None),
-                 texinfo=(texinfo_visit_verilog_diagram, None),
-                 text=(text_visit_verilog_diagram, None),
-                 man=(man_visit_verilog_diagram, None))
-    app.add_directive('verilog-diagram', VerilogDiagram)
+    app.add_node(hdl_diagram,
+                 html=(html_visit_hdl_diagram, None),
+                 latex=(latex_visit_hdl_diagram, None),
+                 texinfo=(texinfo_visit_hdl_diagram, None),
+                 text=(text_visit_hdl_diagram, None),
+                 man=(man_visit_hdl_diagram, None))
+    app.add_directive('hdl-diagram', HDLDiagram)
     app.add_directive('no-license', NoLicenseInclude)
-    app.add_config_value('verilog_diagram_output_format', 'svg', 'html')
-    app.add_config_value('verilog_diagram_skin', 'default', 'html')
-    app.add_config_value('verilog_diagram_yosys_script', 'default', 'html')
-    app.add_config_value('verilog_diagram_yosys', 'yowasp', 'html')
+    app.add_config_value('hdl_diagram_output_format', 'svg', 'html')
+    app.add_config_value('hdl_diagram_skin', 'default', 'html')
+    app.add_config_value('hdl_diagram_yosys_script', 'default', 'html')
+    app.add_config_value('hdl_diagram_yosys', 'yowasp', 'html')
     return {'version': '1.0', 'parallel_read_safe': True}
