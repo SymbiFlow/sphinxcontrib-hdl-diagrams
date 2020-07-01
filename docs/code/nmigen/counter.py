@@ -1,5 +1,5 @@
 from nmigen import *
-from nmigen.cli import main, pysim
+from nmigen.back import rtlil
 
 
 class Counter(Elaboratable):
@@ -15,5 +15,4 @@ class Counter(Elaboratable):
 
 
 ctr = Counter(width=16)
-if __name__ == "__main__":
-    main(ctr, ports=[ctr.o])
+print(rtlil.convert(ctr, ports=[ctr.o]))
