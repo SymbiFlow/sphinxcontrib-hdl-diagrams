@@ -9,7 +9,7 @@ script:
 
 before_deploy:
     - make clean
-    - make sphinxcontrib_verilog_diagrams/version.py
+    - make sphinxcontrib_hdl_diagrams/version.py
     - sudo ln -sf /usr/bin/python3 /usr/bin/python
 
 deploy:

@@ -1,4 +1,4 @@
-name: sphinxcontrib-verilog-diagrams
+name: sphinxcontrib-hdl-diagrams
 channels:
 - symbiflow
 - conda-forge
