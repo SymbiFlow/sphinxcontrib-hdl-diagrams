@@ -26,9 +26,13 @@ Verilog
 nMigen
 ++++++
 
+For `hdl-diagram` to work with nMigen, there must be a call to `nmigen.cli.main`
+with an `Elaboratable` object.
+
 .. no-license:: ../code/nmigen/counter.py
    :language: python
    :linenos:
+   :emphasize-lines: 5,17,19
 
 .. code-block:: rst
    :linenos:
