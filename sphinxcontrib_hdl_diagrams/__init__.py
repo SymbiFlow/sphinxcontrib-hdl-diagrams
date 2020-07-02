@@ -448,6 +448,7 @@ def setup(app):
                  text=(text_visit_hdl_diagram, None),
                  man=(man_visit_hdl_diagram, None))
     app.add_directive('hdl-diagram', HDLDiagram)
+    app.add_directive('verilog-diagram', HDLDiagram)
     app.add_directive('no-license', NoLicenseInclude)
     app.add_config_value('hdl_diagram_output_format', 'svg', 'html')
     return {'version': '1.0', 'parallel_read_safe': True}
