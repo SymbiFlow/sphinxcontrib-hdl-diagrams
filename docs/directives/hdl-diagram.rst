@@ -1,6 +1,33 @@
 hdl-diagram
 ===========
 
+The `hdl-diagram` RST directive can be used to generate a diagram from HDL code and include it in your documentation.
+
+.. code-block:: rst
+
+   .. hdl-diagram:: file.v
+      :type: XXXXX
+      :module: XXXX
+      :flatten:
+
+.. note::
+
+   The `verilog-diagram` directive is kept as an alias of this directive for 
+   compatibility purposes.
+
+Options
+-------
+
+`:type:` - Verilog Diagram Types;
+
+- `yosys-blackbox` - Netlist rendered by Yosys.
+- `yosys-aig` - Verilog file run through `aigmap` before image is generated directly in Yosys.
+- `netlistsvg` - Render output with `netlistsvg <https://github.com/nturley/netlistsvg>`_
+
+`:module:` - Which module to diagram.
+
+`:flatten:` - Use the Yosys `flatten` command before generating the image.
+
 Input Formats
 -------------
 This directive supports 3 input formats: Verilog code, nMigen code, and RTLIL.
