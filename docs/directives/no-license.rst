@@ -1,6 +1,24 @@
 no-license
 ==========
 
+The `no-license` RST directive can be used to include code without license headers.
+
+.. code-block:: rst
+
+   .. no-license:: file.v
+      :language: verilog
+      :linenos:
+      :caption: examples/verilog/dff.v
+
+Options
++++++++
+
+This directive merely overrides the `lines` and `lineno-start` options of the `literalinclude` directive.
+So, refer to `literalinclude` for the available options.
+
+Example
++++++++
+
 Verilog Code Block (with license header)
 ----------------------------------------
 
