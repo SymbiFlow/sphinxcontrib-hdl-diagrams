@@ -6,3 +6,4 @@ Examples
    :glob:
    
    comb-full-adder
+   carry4
