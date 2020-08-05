@@ -2,6 +2,8 @@ setuptools
 docutils
 sphinx
 
+yowasp-yosys>=0.9.post4547.dev9
+
 # Needed to upload to PyPi
 twine
 

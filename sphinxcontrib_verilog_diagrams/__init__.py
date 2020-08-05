@@ -43,6 +43,8 @@ from sphinx.util import logging
 from sphinx.util.i18n import search_image_for_language
 from sphinx.util.osutil import ensuredir, ENOENT, EPIPE, EINVAL
 
+import yowasp_yosys
+
 if False:
     # For type annotation
     from typing import Any, Dict, List, Tuple  # NOQA
@@ -230,9 +232,9 @@ class VerilogDiagram(Directive):
 
 
 def run_yosys(src, cmd):
-    ycmd = "yosys -p '{cmd}' {src}".format(src=src, cmd=cmd)
-    print("Running yosys:", ycmd)
-    subprocess.check_output(ycmd, shell=True)
+    ycmd = ["-q", "-p", cmd, src]
+    print("Running yosys: yosys -q -p", "'{}'".format(cmd), src)
+    yowasp_yosys.run_yosys(ycmd)
 
 
 def diagram_yosys(ipath, opath, module='top', flatten=False, yosys_script='default'):
@@ -260,6 +262,10 @@ def diagram_yosys(ipath, opath, module='top', flatten=False, yosys_script='defau
 prep -top {top} {flatten}; cd {top}; {script}; show -format {fmt} -prefix {oprefix}
 """.format(top=module, flatten=flatten, fmt=oext, oprefix=oprefix, script=yosys_script_cmd).strip(),
     )
+    # somehow yowasp_yosys fails to execute `dot` to convert the dot file to svg,
+    # perhaps a limitation with wasm
+    svgdata = subprocess.check_output(["dot", "-Tsvg", "{}.dot".format(oprefix)])
+    open("{}.svg".format(oprefix), "wb").write(svgdata)
 
     assert path.exists(opath), 'Output file {} was not created!'.format(oopath)
     print('Output file created: {}'.format(opath))
@@ -309,7 +315,7 @@ def diagram_netlistsvg(ipath, opath, module='top', flatten=False, yosys_script='
     run_yosys(
         src=ipath,
         cmd = """\
-prep -top {top} {flatten}; cd {top}; {script}; write_json {ojson}
+prep -top {top} {flatten}; cd {top}; {script}; write_json -compat-int {ojson}
 """.format(top=module, flatten=flatten, ojson=ojson, script=yosys_script_cmd).strip())
     assert path.exists(ojson), 'Output file {} was not created!'.format(ojson)
 

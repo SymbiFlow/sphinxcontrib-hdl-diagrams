@@ -11,7 +11,6 @@ dependencies:
 - pip
 - python=3.7
 - sphinx
-- yosys
 - pip:          # Packages installed from PyPI
   - -r file:requirements.txt
   - -r file:docs/requirements.txt
