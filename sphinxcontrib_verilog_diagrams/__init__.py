@@ -43,8 +43,6 @@ from sphinx.util import logging
 from sphinx.util.i18n import search_image_for_language
 from sphinx.util.osutil import ensuredir, ENOENT, EPIPE, EINVAL
 
-import yowasp_yosys
-
 if False:
     # For type annotation
     from typing import Any, Dict, List, Tuple  # NOQA
@@ -150,6 +148,8 @@ class VerilogDiagram(Directive):
 
     final_argument_whitespace = False
 
+    use_yowasp = True
+
     option_spec = {
         'type': str,
         'module': str,
@@ -232,9 +232,14 @@ class VerilogDiagram(Directive):
 
 
 def run_yosys(src, cmd):
-    ycmd = ["-q", "-p", cmd, src]
     print("Running yosys: yosys -q -p", "'{}'".format(cmd), src)
-    yowasp_yosys.run_yosys(ycmd)
+    if VerilogDiagram.use_yowasp:
+        import yowasp_yosys
+        ycmd = ["-q", "-p", "{}".format(cmd), src]
+        yowasp_yosys.run_yosys(ycmd)
+    else:
+        ycmd = "yosys -p '{cmd}' {src}".format(src=src, cmd=cmd)
+        subprocess.check_output(ycmd, shell=True)
 
 
 def diagram_yosys(ipath, opath, module='top', flatten=False, yosys_script='default'):
@@ -262,10 +267,12 @@ def diagram_yosys(ipath, opath, module='top', flatten=False, yosys_script='defau
 prep -top {top} {flatten}; cd {top}; {script}; show -format {fmt} -prefix {oprefix}
 """.format(top=module, flatten=flatten, fmt=oext, oprefix=oprefix, script=yosys_script_cmd).strip(),
     )
-    # somehow yowasp_yosys fails to execute `dot` to convert the dot file to svg,
-    # perhaps a limitation with wasm
-    svgdata = subprocess.check_output(["dot", "-Tsvg", "{}.dot".format(oprefix)])
-    open("{}.svg".format(oprefix), "wb").write(svgdata)
+
+    if VerilogDiagram.use_yowasp:
+        # somehow yowasp_yosys fails to execute `dot` to convert the dot file to svg,
+        # which works on native yosys, perhaps a limitation with wasm
+        svgdata = subprocess.check_output(["dot", "-Tsvg", "{}.dot".format(oprefix)])
+        open("{}.svg".format(oprefix), "wb").write(svgdata)
 
     assert path.exists(opath), 'Output file {} was not created!'.format(oopath)
     print('Output file created: {}'.format(opath))
