@@ -82,6 +82,16 @@ Required
 .. |yosys| replace:: ``yosys``
 .. _yosys: https://github.com/YosysHQ/yosys
 
+By default, `verilog-diagram` uses the `yowasp-yosys` package provided in PyPI. It can be installed by running `pip install -r requirements.txt`.
+However, you could also use the `yosys` that is installed on your system, by adding the following line in `setup(app)` inside conf.py.
+
+.. code-block:: py
+   def setup(app):
+      ...
+      VerilogDiagram.use_yowasp = False
+      ...
+
+
 Optional
 ~~~~~~~~
 
