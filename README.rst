@@ -86,6 +86,7 @@ By default, `verilog-diagram` uses the `yowasp-yosys` package provided in PyPI. 
 However, you could also use the `yosys` that is installed on your system, by adding the following line in `setup(app)` inside conf.py.
 
 .. code-block:: py
+
    def setup(app):
       ...
       VerilogDiagram.use_yowasp = False
