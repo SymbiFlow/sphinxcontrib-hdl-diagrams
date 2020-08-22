@@ -116,7 +116,7 @@ class NoLicenseInclude(LiteralInclude):
         # type: () -> List[nodes.Node]
 
         rel_filename, filename = self.env.relfn2path(self.arguments[0])
-        code = open(rel_filename, 'r').read().strip().split('\n')
+        code = open(filename, 'r').read().strip().split('\n')
 
         first_line = next(
             (idx for idx, line in enumerate(code) if 'SPDX' in line), 1)
