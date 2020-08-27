@@ -273,6 +273,8 @@ def run_netlistsvg(ipath, opath, skin='default'):
     netlistsvg_cmd = "netlistsvg {ipath} -o {opath}".format(ipath=ipath, opath=opath)
     if skin != 'default':
         netlistsvg_cmd += " --skin {skin}".format(skin=skin)
+
+    print("Running netlistsvg:", netlistsvg_cmd)
     subprocess.check_output(netlistsvg_cmd, shell=True)
 
     assert path.exists(opath), 'Output file {} was not created!'.format(opath)
