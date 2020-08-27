@@ -4,3 +4,6 @@ sphinx
 
 # Needed to upload to PyPi
 twine
+
+# Needed for tests
+jinja2

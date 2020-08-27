@@ -3,9 +3,28 @@ language: minimal
 before_install:
     - make env
 
-script:
-    - make test
-    - make build
+stages:
+    - name:
+        - Test
+        - Build
+
+jobs:
+    - stage: Tests
+      name: "Test :skin: option"
+      script:
+        - source env/conda/bin/activate sphinxcontrib-verilog-diagrams
+        - cd tests && python3 -m unittest test.TestSkins
+
+    - stage: Tests
+      name: "Test :yosys_script: option"
+      script:
+        - source env/conda/bin/activate sphinxcontrib-verilog-diagrams
+        - cd tests && python3 -m unittest test.TestYosysScript
+
+    - stage: Build
+      name: "Build"
+      script:
+        - make build
 
 before_deploy:
     - make clean
