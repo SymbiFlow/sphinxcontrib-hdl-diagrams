@@ -465,18 +465,13 @@ def render_diagram_html(
         if alt is None:
             alt = node.get('alt', self.encode(code).strip())
         imgcss = imgcls and 'class="%s"' % imgcls or ''
-        if format == 'svg':
-            svgtag = '''<object data="%s" type="image/svg+xml">
-            <p class="warning">%s</p></object>\n''' % (fname, alt)
-            self.body.append(svgtag)
-        else:
-            if 'align' in node:
-                self.body.append('<div align="%s" class="align-%s">' %
-                                 (node['align'], node['align']))
-            self.body.append('<img src="%s" alt="%s" %s/>\n' %
-                             (fname, alt, imgcss))
-            if 'align' in node:
-                self.body.append('</div>\n')
+        if 'align' in node:
+            self.body.append('<div align="%s" class="align-%s">' %
+                             (node['align'], node['align']))
+        self.body.append('<img src="%s" alt="%s" %s/>\n' %
+                         (fname, alt, imgcss))
+        if 'align' in node:
+            self.body.append('</div>\n')
 
     raise nodes.SkipNode
 
