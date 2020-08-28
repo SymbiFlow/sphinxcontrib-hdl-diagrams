@@ -117,6 +117,7 @@ class TestYosysScript(TestBase):
             app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
             app.build(force_all=True)
 
+
 class TestYosysType(TestBase):
 
     TEST_CASE_NAME = "TestYowasp"
@@ -190,6 +191,7 @@ class TestYosysType(TestBase):
             app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
             app.build(force_all=True)
 
+
 class TestNMigen(TestBase):
 
     TEST_CASE_NAME = "TestNMigen"
@@ -215,6 +217,7 @@ class TestNMigen(TestBase):
         with docutils_namespace():
             app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
             app.build(force_all=True)
+
 
 class TestRTLIL(TestBase):
 
@@ -262,6 +265,34 @@ class TestCompat(TestBase):
 extensions = [
     'sphinxcontrib_verilog_diagrams',
 ]"""
+        }
+
+        self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
+
+        # Run the Sphinx
+        sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
+        with docutils_namespace():
+            app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
+            app.build(force_all=True)
+
+
+class TestFlatten(TestBase):
+
+    TEST_CASE_NAME = "TestFlatten"
+    TEST_CASE_BUILD_DIR = os.path.join("build", TEST_CASE_NAME)
+
+    def test_yosys_script(self):
+        TEST_NAME = "test_flatten"
+        TEST_BUILD_DIR = os.path.join("build", self.TEST_CASE_NAME, TEST_NAME)
+        TEST_FILES = [
+            "test_flatten/test_flatten.rst",
+            "code/verilog/fullAdder.v",
+            "code/verilog/halfAdder.v"
+        ]
+        TEST_JINJA_DICT = {
+            "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
+            "master_doc": "'test_flatten'",
+            "custom_variables": ""
         }
 
         self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)

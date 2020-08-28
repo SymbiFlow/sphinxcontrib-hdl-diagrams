@@ -21,6 +21,10 @@ jobs:
       script:
         - cd tests && python3 -m unittest test.TestYosysScript
 
+      name: "Test :flatten: option"
+      script:
+        - cd tests && python3 -m unittest test.TestFlatten
+
     - stage: Tests
       name: "Test verilog_diagram_yosys config variable"
       script:
