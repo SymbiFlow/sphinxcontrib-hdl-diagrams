@@ -40,14 +40,14 @@ class TestSkins(unittest.TestCase):
         TEST_BUILD_DIR = os.path.join("build", self.TEST_CASE_NAME, TEST_NAME)
         TEST_FILES = [
             "test_skins/test_skins.rst",
-            "test_skins/skin-orange.svg",
+            "test_skins/skin-purple.svg",
             "test_skins/skin-yellow.svg",
             "verilog/adder.v"
         ]
         TEST_JINJA_DICT = {
             "verilog_diagrams_path": "'{}'".format(VERILOG_DIAGRAMS_PATH),
             "master_doc": "'test_skins'",
-            "custom_variables": "verilog_diagram_skin = os.path.realpath('skin-orange.svg')"
+            "custom_variables": "verilog_diagram_skin = os.path.realpath('skin-purple.svg')"
         }
 
         # Create the TestCase build directory

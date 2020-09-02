@@ -11,7 +11,7 @@ variable in the ``conf.py`` script.
 
 Here is the fragment of the ``conf.py`` script::
 
-   verilog_diagram_skin = os.path.realpath('skin-orange.svg')
+   verilog_diagram_skin = os.path.realpath('skin-purple.svg')
 
 The following ``verilog-diagram`` diagram should be placed in an RST file::
 
@@ -20,7 +20,7 @@ The following ``verilog-diagram`` diagram should be placed in an RST file::
       :module: ADDER
 
 Below you can see the output of the directive. The diagram presented below
-should be black-orange.
+should be black-purple.
 
 .. verilog-diagram:: adder.v
    :type: netlistsvg
