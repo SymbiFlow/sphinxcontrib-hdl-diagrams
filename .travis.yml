@@ -7,6 +7,7 @@ stages:
     - name:
         - Test
         - Build
+        - Deploy
 
 jobs:
     - stage: Tests
@@ -26,14 +27,15 @@ jobs:
       script:
         - make build
 
-before_deploy:
-    - make clean
-    - make sphinxcontrib_verilog_diagrams/version.py
-    - sudo ln -sf /usr/bin/python3 /usr/bin/python
-
-deploy:
-  provider: pypi
-  username: __token__
-  distributions: sdist bdist_wheel
-  skip_existing: true
-  edge: true # opt in to dpl v2
+    - stage: Deploy
+      name: "PyPI"
+      before_deploy:
+        - make clean
+        - make sphinxcontrib_verilog_diagrams/version.py
+        - sudo ln -sf /usr/bin/python3 /usr/bin/python
+      deploy:
+        provider: pypi
+        username: __token__
+        distributions: sdist bdist_wheel
+        skip_existing: true
+        edge: true # opt in to dpl v2
