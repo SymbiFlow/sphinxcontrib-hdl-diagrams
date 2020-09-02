@@ -62,5 +62,6 @@ upload: build | $(CONDA_ENV_PYTHON)
 
 test: $(VERSION_PY) | $(CONDA_ENV_PYTHON)
 	$(IN_CONDA_ENV) cd docs; make html
+	$(IN_CONDA_ENV) cd tests; make test
 
 .PHONY: test

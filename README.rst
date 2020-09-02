@@ -101,10 +101,11 @@ Check out the `examples <https://sphinxcontrib-verilog-diagrams.readthedocs.io/e
 
 .. code-block:: rst
 
-
    .. verilog-diagram:: file.v
       :type: XXXXX
       :module: XXXX
+      :skin: XXXX
+      :yosys_script: XXXX
       :flatten:
 
 Options

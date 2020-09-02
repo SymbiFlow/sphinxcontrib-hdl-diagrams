@@ -152,6 +152,8 @@ class VerilogDiagram(Directive):
         'type': str,
         'module': str,
         'flatten': bool,
+        'skin': str,
+        'yosys_script': str,
 
         'alt': directives.unchanged,
         'align': align_spec,
@@ -199,6 +201,26 @@ class VerilogDiagram(Directive):
         if 'align' in self.options:
             node['align'] = self.options['align']
 
+        yosys_script = self.options.get('yosys_script', None)
+        if yosys_script not in [None, 'default']:
+            _, yosys_script_filename = env.relfn2path(yosys_script)
+            if not path.exists(yosys_script_filename):
+                raise VerilogDiagramError("Yosys script {} does not exist!".format(yosys_script_filename))
+            else:
+                node['options']['yosys_script'] = yosys_script_filename
+        else:
+            node['options']['yosys_script'] = yosys_script
+
+        skin = self.options.get('skin', None)
+        if skin not in [None, 'default']:
+            _, skin_filename = env.relfn2path(skin)
+            if not os.path.exists(skin_filename):
+                raise VerilogDiagramError("Skin file {} does not exist!".format(skin_filename))
+            else:
+                node['options']['skin'] = skin_filename
+        else:
+            node['options']['skin'] = skin
+
         caption = self.options.get('caption')
         if caption:
             node = figure_wrapper(self, node, caption)
@@ -213,9 +235,11 @@ def run_yosys(src, cmd):
     subprocess.check_output(ycmd, shell=True)
 
 
-def diagram_yosys(ipath, opath, module='top', flatten=False):
+def diagram_yosys(ipath, opath, module='top', flatten=False, yosys_script='default'):
     assert path.exists(ipath), 'Input file missing: {}'.format(ipath)
     assert not path.exists(opath), 'Output file exists: {}'.format(opath)
+    if yosys_script != 'default':
+        assert path.exists(yosys_script), 'Yosys script file missing: {}'.format(yosys_script)
     oprefix, oext = path.splitext(opath)
     assert oext.startswith('.'), oext
     oext = oext[1:]
@@ -225,33 +249,45 @@ def diagram_yosys(ipath, opath, module='top', flatten=False):
     else:
         flatten = ''
 
+    if yosys_script == 'default':
+        yosys_script_cmd = ""
+    else:
+        yosys_script_cmd = "script {}".format(yosys_script)
+
     run_yosys(
         src=ipath,
         cmd = """\
-prep -top {top} {flatten}; cd {top}; show -format {fmt} -prefix {oprefix}
-""".format(top=module, flatten=flatten, fmt=oext, oprefix=oprefix).strip(),
+prep -top {top} {flatten}; cd {top}; {script}; show -format {fmt} -prefix {oprefix}
+""".format(top=module, flatten=flatten, fmt=oext, oprefix=oprefix, script=yosys_script_cmd).strip(),
     )
 
     assert path.exists(opath), 'Output file {} was not created!'.format(oopath)
     print('Output file created: {}'.format(opath))
 
-
-def run_netlistsvg(ipath, opath, skin=None):
+def run_netlistsvg(ipath, opath, skin='default'):
     assert path.exists(ipath), 'Input file missing: {}'.format(ipath)
     assert not path.exists(opath), 'Output file exists: {}'.format(opath)
+    if skin != 'default':
+       assert path.exists(skin), 'Skin file missing: {}'.format(skin)
 
     netlistsvg_cmd = "netlistsvg {ipath} -o {opath}".format(ipath=ipath, opath=opath)
-    if skin:
+    if skin != 'default':
         netlistsvg_cmd += " --skin {skin}".format(skin=skin)
+
+    print("Running netlistsvg:", netlistsvg_cmd)
     subprocess.check_output(netlistsvg_cmd, shell=True)
 
     assert path.exists(opath), 'Output file {} was not created!'.format(opath)
     print('netlistsvg - Output file created: {}'.format(opath))
 
 
-def diagram_netlistsvg(ipath, opath, module='top', flatten=False):
+def diagram_netlistsvg(ipath, opath, module='top', flatten=False, yosys_script='default', skin='default'):
     assert path.exists(ipath), 'Input file missing: {}'.format(ipath)
     assert not path.exists(opath), 'Output file exists: {}'.format(opath)
+    if yosys_script != 'default':
+        assert path.exists(yosys_script), 'Yosys script file missing: {}'.format(yosys_script)
+    if skin != 'default':
+        assert path.exists(skin), 'Skin file missing: {}'.format(skin)
     oprefix, oext = path.splitext(opath)
     assert oext.startswith('.'), oext
     oext = oext[1:]
@@ -260,6 +296,11 @@ def diagram_netlistsvg(ipath, opath, module='top', flatten=False):
         flatten = '-flatten'
     else:
         flatten = ''
+
+    if yosys_script == 'default':
+        yosys_script_cmd = ""
+    else:
+        yosys_script_cmd = "script {}".format(yosys_script)
 
     ojson = oprefix + '.json'
     if path.exists(ojson):
@@ -268,15 +309,15 @@ def diagram_netlistsvg(ipath, opath, module='top', flatten=False):
     run_yosys(
         src=ipath,
         cmd = """\
-prep -top {top} {flatten}; cd {top}; write_json {ojson}
-""".format(top=module, flatten=flatten, ojson=ojson).strip())
+prep -top {top} {flatten}; cd {top}; {script}; write_json {ojson}
+""".format(top=module, flatten=flatten, ojson=ojson, script=yosys_script_cmd).strip())
     assert path.exists(ojson), 'Output file {} was not created!'.format(ojson)
 
-    run_netlistsvg(ojson, opath)
+    run_netlistsvg(ojson, opath, skin)
     print('netlistsvg - Output file created: {}'.format(ojson))
 
 
-def render_diagram(self, code, options, format):
+def render_diagram(self, code, options, format, skin, yosys_script):
     # type: (nodes.NodeVisitor, unicode, Dict, unicode, unicode) -> Tuple[unicode, unicode]
     """Render verilog_diagram code into a PNG or SVG output file."""
 
@@ -292,14 +333,17 @@ def render_diagram(self, code, options, format):
 
     ensuredir(path.dirname(outfn))
 
+    yosys_script = options['yosys_script'] if options['yosys_script'] is not None else yosys_script
+    skin = options['skin'] if options['skin'] is not None else skin
+
     diagram_type = options['type']
     if diagram_type.startswith('yosys'):
         assert diagram_type.startswith('yosys-'), diagram_type
         diagram_yosys(
-            verilog_path, outfn, module=options['module'], flatten=options['flatten'])
+            verilog_path, outfn, module=options['module'], flatten=options['flatten'], yosys_script=yosys_script)
     elif diagram_type == 'netlistsvg':
         diagram_netlistsvg(
-            verilog_path, outfn, module=options['module'], flatten=options['flatten'])
+            verilog_path, outfn, module=options['module'], flatten=options['flatten'], skin=skin)
     else:
         raise Exception('Invalid diagram type "%s"' % diagram_type)
         #raise self.severe(\n' %
@@ -311,13 +355,21 @@ def render_diagram(self, code, options, format):
 def render_diagram_html(
         self, node, code, options, imgcls=None, alt=None):
     # type: (nodes.NodeVisitor, verilog_diagram, unicode, Dict, unicode, unicode, unicode) -> Tuple[unicode, unicode]  # NOQA
-    format = self.builder.config.verilog_diagram_output_format
 
+    yosys_script = self.builder.config.verilog_diagram_yosys_script
+    if yosys_script != 'default' and not path.exists(yosys_script):
+        raise VerilogDiagramError("Yosys script file {} does not exist! Change verilog_diagram_yosys_script variable".format(yosys_script))
+
+    skin = self.builder.config.verilog_diagram_skin
+    if skin != 'default' and not path.exists(skin):
+        raise VerilogDiagramError("Skin file {} does not exist! Change verilog_diagram_skin variable".format(skin))
+
+    format = self.builder.config.verilog_diagram_output_format
     try:
         if format not in ('png', 'svg'):
             raise VerilogDiagramError("verilog_diagram_output_format must be one of 'png', "
                                 "'svg', but is %r" % format)
-        fname, outfn = render_diagram(self, code, options, format)
+        fname, outfn = render_diagram(self, code, options, format, skin, yosys_script)
     except VerilogDiagramError as exc:
         logger.warning('verilog_diagram code %r: ' % code + str(exc))
         raise nodes.SkipNode
@@ -432,5 +484,7 @@ def setup(app):
     app.add_directive('verilog-diagram', VerilogDiagram)
     app.add_directive('no-license', NoLicenseInclude)
     app.add_config_value('verilog_diagram_output_format', 'svg', 'html')
+    app.add_config_value('verilog_diagram_skin', 'default', 'html')
+    app.add_config_value('verilog_diagram_yosys_script', 'default', 'html')
     return {'version': '1.0', 'parallel_read_safe': True}
 
