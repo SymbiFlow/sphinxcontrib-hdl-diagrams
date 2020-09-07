@@ -22,6 +22,12 @@ jobs:
         - source env/conda/bin/activate sphinxcontrib-verilog-diagrams
         - cd tests && python3 -m unittest test.TestYosysScript
 
+    - stage: Tests
+      name: "Test verilog_diagram_yosys config variable"
+      script:
+        - source env/conda/bin/activate sphinxcontrib-verilog-diagrams
+        - cd tests && python3 -m unittest test.TestYosysType
+
     - stage: Build
       name: "Build"
       script:
