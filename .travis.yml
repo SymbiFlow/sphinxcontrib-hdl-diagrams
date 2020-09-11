@@ -2,6 +2,7 @@ language: minimal
 
 before_install:
     - make env
+    - source env/conda/bin/activate sphinxcontrib-hdl-diagrams
 
 stages:
     - name:
@@ -13,19 +14,16 @@ jobs:
     - stage: Tests
       name: "Test :skin: option"
       script:
-        - source env/conda/bin/activate sphinxcontrib-verilog-diagrams
         - cd tests && python3 -m unittest test.TestSkins
 
     - stage: Tests
       name: "Test :yosys_script: option"
       script:
-        - source env/conda/bin/activate sphinxcontrib-verilog-diagrams
         - cd tests && python3 -m unittest test.TestYosysScript
 
     - stage: Tests
       name: "Test verilog_diagram_yosys config variable"
       script:
-        - source env/conda/bin/activate sphinxcontrib-verilog-diagrams
         - cd tests && python3 -m unittest test.TestYosysType
 
     - stage: Build
@@ -35,6 +33,7 @@ jobs:
 
     - stage: Deploy
       name: "PyPI"
+      before_install: null
       before_deploy:
         - make clean
         - make sphinxcontrib_verilog_diagrams/version.py
