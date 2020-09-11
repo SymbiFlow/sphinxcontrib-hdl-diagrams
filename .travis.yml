@@ -26,6 +26,16 @@ jobs:
       script:
         - cd tests && python3 -m unittest test.TestYosysType
 
+    - stage: Tests
+      name: "Test nMigen input format"
+      script:
+        - cd tests && python3 -m unittest test.TestNMigen
+
+    - stage: Tests
+      name: "Test RTLIL input format"
+      script:
+        - cd tests && python3 -m unittest test.TestRTLIL
+
     - stage: Build
       name: "Build"
       script:

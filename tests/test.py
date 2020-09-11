@@ -72,7 +72,7 @@ class TestSkins(TestBase):
             "test_skins/test_skins.rst",
             "test_skins/skin-purple.svg",
             "test_skins/skin-yellow.svg",
-            "verilog/adder.v"
+            "code/verilog/adder.v"
         ]
         TEST_JINJA_DICT = {
             "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
@@ -101,7 +101,7 @@ class TestYosysScript(TestBase):
             "test_yosys_script/test_yosys_script.rst",
             "test_yosys_script/yosys_script.ys",
             "test_yosys_script/yosys_script2.ys",
-            "verilog/adder.v"
+            "code/verilog/adder.v"
         ]
         TEST_JINJA_DICT = {
             "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
@@ -127,7 +127,7 @@ class TestYosysType(TestBase):
         TEST_BUILD_DIR = os.path.join("build", self.TEST_CASE_NAME, TEST_NAME)
         TEST_FILES = [
             "test_yosys_type/test_yosys_yowasp.rst",
-            "verilog/adder.v"
+            "code/verilog/adder.v"
         ]
         TEST_JINJA_DICT = {
             "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
@@ -149,7 +149,7 @@ class TestYosysType(TestBase):
         TEST_BUILD_DIR = os.path.join("build", self.TEST_CASE_NAME, TEST_NAME)
         TEST_FILES = [
             "test_yosys_type/test_yosys_system.rst",
-            "verilog/adder.v"
+            "code/verilog/adder.v"
         ]
         TEST_JINJA_DICT = {
             "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
@@ -171,7 +171,7 @@ class TestYosysType(TestBase):
         TEST_BUILD_DIR = os.path.join("build", self.TEST_CASE_NAME, TEST_NAME)
         TEST_FILES = [
             "test_yosys_type/test_yosys_path.rst",
-            "verilog/adder.v"
+            "code/verilog/adder.v"
         ]
 
         yosys_path = shutil.which("yosys")
@@ -180,6 +180,58 @@ class TestYosysType(TestBase):
             "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
             "master_doc": "'test_yosys_path'",
             "custom_variables": "hdl_diagram_yosys = '{}'".format(yosys_path)
+        }
+
+        self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
+
+        # Run the Sphinx
+        sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
+        with docutils_namespace():
+            app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
+            app.build(force_all=True)
+
+class TestNMigen(TestBase):
+
+    TEST_CASE_NAME = "TestNMigen"
+    TEST_CASE_BUILD_DIR = os.path.join("build", TEST_CASE_NAME)
+
+    def test_yosys_script(self):
+        TEST_NAME = "test_nmigen"
+        TEST_BUILD_DIR = os.path.join("build", self.TEST_CASE_NAME, TEST_NAME)
+        TEST_FILES = [
+            "test_nmigen/test_nmigen.rst",
+            "code/nmigen/counter.py"
+        ]
+        TEST_JINJA_DICT = {
+            "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
+            "master_doc": "'test_nmigen'",
+            "custom_variables": "''"
+        }
+
+        self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
+
+        # Run the Sphinx
+        sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
+        with docutils_namespace():
+            app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
+            app.build(force_all=True)
+
+class TestRTLIL(TestBase):
+
+    TEST_CASE_NAME = "TestRTLIL"
+    TEST_CASE_BUILD_DIR = os.path.join("build", TEST_CASE_NAME)
+
+    def test_yosys_script(self):
+        TEST_NAME = "test_rtlil"
+        TEST_BUILD_DIR = os.path.join("build", self.TEST_CASE_NAME, TEST_NAME)
+        TEST_FILES = [
+            "test_rtlil/test_rtlil.rst",
+            "code/rtlil/counter.il"
+        ]
+        TEST_JINJA_DICT = {
+            "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
+            "master_doc": "'test_rtlil'",
+            "custom_variables": "''"
         }
 
         self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
