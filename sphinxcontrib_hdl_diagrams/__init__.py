@@ -162,10 +162,10 @@ class HDLDiagram(Directive):
     }
 
     global_variable_options = {
-        "verilog_diagram_output_format": ["svg", "png"],
-        "verilog_diagram_skin": ["default"],  # or path
-        "verilog_diagram_yosys_script": ["default"],  # or path
-        "verilog_diagram_yosys": ["yowasp", "system"]  # or path
+        "hdl_diagram_output_format": ["svg", "png"],
+        "hdl_diagram_skin": ["default"],  # or path
+        "hdl_diagram_yosys_script": ["default"],  # or path
+        "hdl_diagram_yosys": ["yowasp", "system"]  # or path
     }
 
     def run(self):
@@ -213,7 +213,7 @@ class HDLDiagram(Directive):
         if yosys_script not in [None, 'default']:
             _, yosys_script_filename = env.relfn2path(yosys_script)
             if not path.exists(yosys_script_filename):
-                raise VerilogDiagramError("Yosys script {} does not exist!".format(yosys_script_filename))
+                raise HDLDiagramError("Yosys script {} does not exist!".format(yosys_script_filename))
             else:
                 node['options']['yosys_script'] = yosys_script_filename
         else:
@@ -223,7 +223,7 @@ class HDLDiagram(Directive):
         if skin not in [None, 'default']:
             _, skin_filename = env.relfn2path(skin)
             if not os.path.exists(skin_filename):
-                raise VerilogDiagramError("Skin file {} does not exist!".format(skin_filename))
+                raise HDLDiagramError("Skin file {} does not exist!".format(skin_filename))
             else:
                 node['options']['skin'] = skin_filename
         else:
@@ -260,8 +260,8 @@ def diagram_yosys(ipath, opath, module='top', flatten=False,
 
     assert path.exists(ipath), 'Input file missing: {}'.format(ipath)
     assert not path.exists(opath), 'Output file exists: {}'.format(opath)
-    yosys_options = VerilogDiagram.global_variable_options["verilog_diagram_yosys"]
-    assert yosys in yosys_options or os.path.exists(yosys), "Invalid verilog_diagram_yosys value!"
+    yosys_options = HDLDiagram.global_variable_options["hdl_diagram_yosys"]
+    assert yosys in yosys_options or os.path.exists(yosys), "Invalid hdl_diagram_yosys value!"
     if yosys_script != 'default':
         assert path.exists(yosys_script), 'Yosys script file missing: {}'.format(yosys_script)
     oprefix, oext = path.splitext(opath)
@@ -297,7 +297,7 @@ def diagram_yosys(ipath, opath, module='top', flatten=False,
         with open("{}.svg".format(oprefix), "wb") as img:
             img.write(svgdata)
 
-    assert path.exists(opath), 'Output file {} was not created!'.format(oopath)
+    assert path.exists(opath), 'Output file {} was not created!'.format(opath)
     print('Output file created: {}'.format(opath))
 
 def run_netlistsvg(ipath, opath, skin='default'):
@@ -323,8 +323,8 @@ def diagram_netlistsvg(ipath, opath, module='top', flatten=False,
 
     assert path.exists(ipath), 'Input file missing: {}'.format(ipath)
     assert not path.exists(opath), 'Output file exists: {}'.format(opath)
-    yosys_options = VerilogDiagram.global_variable_options["verilog_diagram_yosys"]
-    assert yosys in yosys_options or os.path.exists(yosys), "Invalid verilog_diagram_yosys value!"
+    yosys_options = HDLDiagram.global_variable_options["hdl_diagram_yosys"]
+    assert yosys in yosys_options or os.path.exists(yosys), "Invalid hdl_diagram_yosys value!"
     if yosys_script != 'default':
         assert path.exists(yosys_script), 'Yosys script file missing: {}'.format(yosys_script)
     if skin != 'default':
@@ -366,7 +366,7 @@ def diagram_netlistsvg(ipath, opath, module='top', flatten=False,
 
 def nmigen_to_rtlil(fname, oname):
     subprocess.run([sys.executable, fname], stdout=open(oname, "w"),
-                    shell=False, check=True)
+                   shell=False, check=True)
 
 
 def render_diagram(self, code, options, format, skin, yosys_script):
@@ -389,7 +389,7 @@ def render_diagram(self, code, options, format, skin, yosys_script):
         module = options['module']
     else:
         raise HDLDiagramError("hdl_diagram_code file extension must be one of '.v', "
-                            "'.il', or '.py', but is %r" % source_ext)
+                              "'.il', or '.py', but is %r" % source_ext)
 
     if path.isfile(outfn):
         print('Exiting file:', outfn)
@@ -400,10 +400,10 @@ def render_diagram(self, code, options, format, skin, yosys_script):
     yosys_script = options['yosys_script'] if options['yosys_script'] is not None else yosys_script
     skin = options['skin'] if options['skin'] is not None else skin
 
-    yosys = self.builder.config.verilog_diagram_yosys
-    yosys_options = VerilogDiagram.global_variable_options["verilog_diagram_yosys"]
+    yosys = self.builder.config.hdl_diagram_yosys
+    yosys_options = HDLDiagram.global_variable_options["hdl_diagram_yosys"]
     if yosys not in yosys_options and not os.path.exists(yosys):
-        raise VerilogDiagramError("Yosys not found!")
+        raise HDLDiagramError("Yosys not found!")
     else:
         yosys = yosys if yosys in yosys_options else os.path.realpath(yosys)
 
@@ -411,7 +411,7 @@ def render_diagram(self, code, options, format, skin, yosys_script):
     if diagram_type.startswith('yosys'):
         assert diagram_type.startswith('yosys-'), diagram_type
         diagram_yosys(
-            verilog_path,
+            source_path,
             outfn,
             module=options['module'],
             flatten=options['flatten'],
@@ -419,7 +419,7 @@ def render_diagram(self, code, options, format, skin, yosys_script):
             yosys=yosys)
     elif diagram_type == 'netlistsvg':
         diagram_netlistsvg(
-            verilog_path,
+            source_path,
             outfn,
             module=options['module'],
             flatten=options['flatten'],
@@ -427,8 +427,8 @@ def render_diagram(self, code, options, format, skin, yosys_script):
             yosys=yosys)
     else:
         raise Exception('Invalid diagram type "%s"' % diagram_type)
-        #raise self.severe(\n' %
-        #                  (SafeString(diagram_type),))
+        # raise self.severe(\n' %
+        #                   (SafeString(diagram_type),))
 
     return relfn, outfn
 
@@ -437,19 +437,19 @@ def render_diagram_html(
         self, node, code, options, imgcls=None, alt=None):
     # type: (nodes.NodeVisitor, hdl_diagram, unicode, Dict, unicode, unicode, unicode) -> Tuple[unicode, unicode]  # NOQA
 
-    yosys_script = self.builder.config.verilog_diagram_yosys_script
+    yosys_script = self.builder.config.hdl_diagram_yosys_script
     if yosys_script != 'default' and not path.exists(yosys_script):
-        raise VerilogDiagramError("Yosys script file {} does not exist! Change verilog_diagram_yosys_script variable".format(yosys_script))
+        raise HDLDiagramError("Yosys script file {} does not exist! Change hdl_diagram_yosys_script variable".format(yosys_script))
 
-    skin = self.builder.config.verilog_diagram_skin
+    skin = self.builder.config.hdl_diagram_skin
     if skin != 'default' and not path.exists(skin):
-        raise VerilogDiagramError("Skin file {} does not exist! Change verilog_diagram_skin variable".format(skin))
+        raise HDLDiagramError("Skin file {} does not exist! Change hdl_diagram_skin variable".format(skin))
 
-    format = self.builder.config.verilog_diagram_output_format
+    format = self.builder.config.hdl_diagram_output_format
     try:
         if format not in ('png', 'svg'):
             raise HDLDiagramError("hdl_diagram_output_format must be one of 'png', "
-                                "'svg', but is %r" % format)
+                                  "'svg', but is %r" % format)
         fname, outfn = render_diagram(self, code, options, format, skin, yosys_script)
     except HDLDiagramError as exc:
         logger.warning('hdl_diagram code %r: ' % code + str(exc))

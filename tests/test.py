@@ -8,7 +8,7 @@ from jinja2 import Environment, FileSystemLoader
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 
-VERILOG_DIAGRAMS_PATH = os.path.abspath("..")
+HDL_DIAGRAMS_PATH = os.path.abspath("..")
 
 ## Helpers
 
@@ -75,9 +75,9 @@ class TestSkins(TestBase):
             "verilog/adder.v"
         ]
         TEST_JINJA_DICT = {
-            "verilog_diagrams_path": "'{}'".format(VERILOG_DIAGRAMS_PATH),
+            "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
             "master_doc": "'test_skins'",
-            "custom_variables": "verilog_diagram_skin = os.path.realpath('skin-purple.svg')"
+            "custom_variables": "hdl_diagram_skin = os.path.realpath('skin-purple.svg')"
         }
 
         self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
@@ -104,9 +104,9 @@ class TestYosysScript(TestBase):
             "verilog/adder.v"
         ]
         TEST_JINJA_DICT = {
-            "verilog_diagrams_path": "'{}'".format(VERILOG_DIAGRAMS_PATH),
+            "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
             "master_doc": "'test_yosys_script'",
-            "custom_variables": "verilog_diagram_yosys_script = os.path.realpath('yosys_script.ys')"
+            "custom_variables": "hdl_diagram_yosys_script = os.path.realpath('yosys_script.ys')"
         }
 
         self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
@@ -130,7 +130,7 @@ class TestYosysType(TestBase):
             "verilog/adder.v"
         ]
         TEST_JINJA_DICT = {
-            "verilog_diagrams_path": "'{}'".format(VERILOG_DIAGRAMS_PATH),
+            "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
             "master_doc": "'test_yosys_yowasp'",
             "custom_variables": ""
         }
@@ -152,9 +152,9 @@ class TestYosysType(TestBase):
             "verilog/adder.v"
         ]
         TEST_JINJA_DICT = {
-            "verilog_diagrams_path": "'{}'".format(VERILOG_DIAGRAMS_PATH),
+            "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
             "master_doc": "'test_yosys_system'",
-            "custom_variables": "verilog_diagram_yosys = 'system'"
+            "custom_variables": "hdl_diagram_yosys = 'system'"
         }
 
         self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
@@ -177,9 +177,9 @@ class TestYosysType(TestBase):
         yosys_path = shutil.which("yosys")
 
         TEST_JINJA_DICT = {
-            "verilog_diagrams_path": "'{}'".format(VERILOG_DIAGRAMS_PATH),
+            "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
             "master_doc": "'test_yosys_path'",
-            "custom_variables": "verilog_diagram_yosys = '{}'".format(yosys_path)
+            "custom_variables": "hdl_diagram_yosys = '{}'".format(yosys_path)
         }
 
         self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
