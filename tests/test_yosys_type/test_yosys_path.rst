@@ -21,11 +21,11 @@ Yosys BlackBox Diagram
 
 .. code-block:: rst
 
-   .. verilog-diagram:: adder.v
+   .. hdl-diagram:: adder.v
       :type: yosys-blackbox
       :module: ADDER
 
-.. verilog-diagram:: adder.v
+.. hdl-diagram:: adder.v
    :type: yosys-blackbox
    :module: ADDER
 
@@ -34,11 +34,11 @@ Yosys AIG Diagram
 
 .. code-block:: rst
 
-   .. verilog-diagram:: adder.v
+   .. hdl-diagram:: adder.v
       :type: yosys-aig
       :module: ADDER
 
-.. verilog-diagram:: adder.v
+.. hdl-diagram:: adder.v
    :type: yosys-aig
    :module: ADDER
 
@@ -47,10 +47,10 @@ Netlistsvg Diagram
 
 .. code-block:: rst
 
-   .. verilog-diagram:: adder.v
+   .. hdl-diagram:: adder.v
       :type: netlistsvg
       :module: ADDER
 
-.. verilog-diagram:: adder.v
+.. hdl-diagram:: adder.v
    :type: netlistsvg
    :module: ADDER
