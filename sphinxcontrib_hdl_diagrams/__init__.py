@@ -365,8 +365,12 @@ def diagram_netlistsvg(ipath, opath, module='top', flatten=False,
 
 
 def nmigen_to_rtlil(fname, oname):
-    subprocess.run([sys.executable, fname], stdout=open(oname, "w"),
-                   shell=False, check=True)
+    assert os.path.exists(fname)
+
+    output_dir = os.path.dirname(oname)
+    os.makedirs(output_dir, exist_ok=True)
+    cmd = "{python} {script} > {output}".format(python=sys.executable, script=fname, output=oname)
+    subprocess.run(cmd, shell=True, check=True)
 
 
 def render_diagram(self, code, options, format, skin, yosys_script):
