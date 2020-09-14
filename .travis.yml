@@ -36,6 +36,11 @@ jobs:
       script:
         - cd tests && python3 -m unittest test.TestRTLIL
 
+    - stage: Tests
+      name: "Test compatibility package"
+      script:
+        - cd tests && python3 -m unittest test.TestCompat
+
     - stage: Build
       name: "Build"
       script:

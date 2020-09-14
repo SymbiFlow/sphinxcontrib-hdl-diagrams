@@ -242,5 +242,36 @@ class TestRTLIL(TestBase):
             app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
             app.build(force_all=True)
 
+
+class TestCompat(TestBase):
+
+    TEST_CASE_NAME = "TestCompat"
+    TEST_CASE_BUILD_DIR = os.path.join("build", TEST_CASE_NAME)
+
+    def test_yosys_script(self):
+        TEST_NAME = "test_compat"
+        TEST_BUILD_DIR = os.path.join("build", self.TEST_CASE_NAME, TEST_NAME)
+        TEST_FILES = [
+            "test_compat/test_compat.rst",
+            "code/verilog/adder.v"
+        ]
+        TEST_JINJA_DICT = {
+            "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
+            "master_doc": "'test_compat'",
+            "custom_variables": """
+extensions = [
+    'sphinxcontrib_verilog_diagrams',
+]"""
+        }
+
+        self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
+
+        # Run the Sphinx
+        sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
+        with docutils_namespace():
+            app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
+            app.build(force_all=True)
+
+
 if __name__ == '__main__':
     unittest.main()

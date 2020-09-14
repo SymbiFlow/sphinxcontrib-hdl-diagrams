@@ -16,3 +16,4 @@ dependencies:
   - -r file:requirements.txt
   - -r file:docs/requirements.txt
   - .
+  - compat/.
