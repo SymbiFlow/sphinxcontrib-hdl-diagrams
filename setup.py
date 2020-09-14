@@ -46,6 +46,7 @@ install_requires = [
     'setuptools',
     'docutils',
     'sphinx',
+    'nmigen',
 ]
 
 setup(
