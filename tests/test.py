@@ -10,6 +10,7 @@ from sphinx.util.docutils import docutils_namespace
 
 VERILOG_DIAGRAMS_PATH = os.path.abspath("..")
 
+## Helpers
 
 def get_sphinx_dirs(test_build_dir):
     sphinx_dirs = {
@@ -29,8 +30,37 @@ def generate_sphinx_config(test_build_dir, **jinja_dict):
         template = env.get_template("conf.py.template")
         template.stream(**jinja_dict).dump(fd)
 
+## Base class for tests
 
-class TestSkins(unittest.TestCase):
+class TestBase(unittest.TestCase):
+
+    def print_test_header(self, case_name, test_name):
+        print("")
+        print("# ---------------------------------------------------------- #")
+        print("# TEST CASE: {}".format(case_name))
+        print("# TEST NAME: {}".format(test_name))
+        print("# ---------------------------------------------------------- #")
+        print("")
+
+    def prepare_test(self, test_name, test_build_dir, test_files, **test_jinja_dict):
+        self.print_test_header(self.TEST_CASE_NAME, test_name)
+
+        # Create the TestCase build directory
+        os.makedirs(test_build_dir, exist_ok=True)
+
+        # Generate a Sphinx config
+        generate_sphinx_config(test_build_dir, **test_jinja_dict)
+
+        # Copy the test files
+        for src in test_files:
+            src_basename = os.path.basename(src)
+            dst = os.path.join(test_build_dir, src_basename)
+            shutil.copyfile(src, dst)
+
+
+## Test cases
+
+class TestSkins(TestBase):
 
     TEST_CASE_NAME = "TestSkins"
     TEST_CASE_BUILD_DIR = os.path.join("build", TEST_CASE_NAME)
@@ -50,17 +80,7 @@ class TestSkins(unittest.TestCase):
             "custom_variables": "verilog_diagram_skin = os.path.realpath('skin-purple.svg')"
         }
 
-        # Create the TestCase build directory
-        os.makedirs(TEST_BUILD_DIR, exist_ok=True)
-
-        # Generate a Sphinx config
-        generate_sphinx_config(TEST_BUILD_DIR, **TEST_JINJA_DICT)
-
-        # Copy the test files
-        for src in TEST_FILES:
-            src_basename = os.path.basename(src)
-            dst = os.path.join(TEST_BUILD_DIR, src_basename)
-            shutil.copyfile(src, dst)
+        self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
 
         # Run the Sphinx
         sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
@@ -69,7 +89,7 @@ class TestSkins(unittest.TestCase):
             app.build(force_all=True)
 
 
-class TestYosysScript(unittest.TestCase):
+class TestYosysScript(TestBase):
 
     TEST_CASE_NAME = "TestYosysScript"
     TEST_CASE_BUILD_DIR = os.path.join("build", TEST_CASE_NAME)
@@ -89,17 +109,7 @@ class TestYosysScript(unittest.TestCase):
             "custom_variables": "verilog_diagram_yosys_script = os.path.realpath('yosys_script.ys')"
         }
 
-        # Create the TestCase build directory
-        os.makedirs(TEST_BUILD_DIR, exist_ok=True)
-
-        # Generate a Sphinx config
-        generate_sphinx_config(TEST_BUILD_DIR, **TEST_JINJA_DICT)
-
-        # Copy the test files
-        for src in TEST_FILES:
-            src_basename = os.path.basename(src)
-            dst = os.path.join(TEST_BUILD_DIR, src_basename)
-            shutil.copyfile(src, dst)
+        self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
 
         # Run the Sphinx
         sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
@@ -107,6 +117,78 @@ class TestYosysScript(unittest.TestCase):
             app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
             app.build(force_all=True)
 
+class TestYosysType(TestBase):
+
+    TEST_CASE_NAME = "TestYowasp"
+    TEST_CASE_BUILD_DIR = os.path.join("build", TEST_CASE_NAME)
+
+    def test_yosys_yowasp(self):
+        TEST_NAME = "test_yosys_yowasp"
+        TEST_BUILD_DIR = os.path.join("build", self.TEST_CASE_NAME, TEST_NAME)
+        TEST_FILES = [
+            "test_yosys_type/test_yosys_yowasp.rst",
+            "verilog/adder.v"
+        ]
+        TEST_JINJA_DICT = {
+            "verilog_diagrams_path": "'{}'".format(VERILOG_DIAGRAMS_PATH),
+            "master_doc": "'test_yosys_yowasp'",
+            "custom_variables": ""
+        }
+
+        self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
+
+        # Run the Sphinx
+        sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
+        with docutils_namespace():
+            app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
+            app.build(force_all=True)
+
+    @unittest.skipIf(shutil.which('yosys') is None, 'Skipping test_yosys_system. Yosys is not installed!')
+    def test_yosys_system(self):
+        TEST_NAME = "test_yosys_system"
+        TEST_BUILD_DIR = os.path.join("build", self.TEST_CASE_NAME, TEST_NAME)
+        TEST_FILES = [
+            "test_yosys_type/test_yosys_system.rst",
+            "verilog/adder.v"
+        ]
+        TEST_JINJA_DICT = {
+            "verilog_diagrams_path": "'{}'".format(VERILOG_DIAGRAMS_PATH),
+            "master_doc": "'test_yosys_system'",
+            "custom_variables": "verilog_diagram_yosys = 'system'"
+        }
+
+        self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
+
+        # Run the Sphinx
+        sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
+        with docutils_namespace():
+            app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
+            app.build(force_all=True)
+
+    @unittest.skipIf(shutil.which('yosys') is None, 'Skipping test_yosys_path. Yosys is not installed!')
+    def test_yosys_path(self):
+        TEST_NAME = "test_yosys_path"
+        TEST_BUILD_DIR = os.path.join("build", self.TEST_CASE_NAME, TEST_NAME)
+        TEST_FILES = [
+            "test_yosys_type/test_yosys_path.rst",
+            "verilog/adder.v"
+        ]
+
+        yosys_path = shutil.which("yosys")
+
+        TEST_JINJA_DICT = {
+            "verilog_diagrams_path": "'{}'".format(VERILOG_DIAGRAMS_PATH),
+            "master_doc": "'test_yosys_path'",
+            "custom_variables": "verilog_diagram_yosys = '{}'".format(yosys_path)
+        }
+
+        self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
+
+        # Run the Sphinx
+        sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
+        with docutils_namespace():
+            app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
+            app.build(force_all=True)
 
 if __name__ == '__main__':
     unittest.main()
