@@ -23,16 +23,7 @@ from os import path
 from setuptools import setup, find_packages
 
 __dir__ = path.dirname(path.abspath(__file__))
-
-# Manually import the version number so dependencies don't need to be installed
-# when running setup.py
-version_file = path.join(__dir__, "sphinxcontrib_hdl_diagrams", "version.py")
-if path.exists(version_file):
-    exec(open(version_file).read())
-else:
-    __version__ = "0.0.dev0"
-
-readme_file = path.join(__dir__, 'README.rst')
+readme_file = path.join(__dir__, '../README.rst')
 try:
     with open(readme_file) as f:
         readme = f.read()
@@ -43,16 +34,13 @@ except FileNotFoundError as e:
     __version__ = 'error'
 
 install_requires = [
-    'setuptools',
-    'docutils',
-    'sphinx',
-    'nmigen',
+    'sphinxcontrib-hdl-diagrams'
 ]
 
 setup(
-    name='sphinxcontrib-hdl-diagrams',
-    version=__version__,
-    description='Generate diagrams from HDL in Sphinx.',
+    name='sphinxcontrib-verilog-diagrams',
+    version="0.1.0",
+    description='Generate diagrams from Verilog in Sphinx.',
     long_description=readme,
     long_description_content_type="text/x-rst",
     author="The SymbiFlow Authors",
@@ -60,12 +48,11 @@ setup(
     url='https://github.com/SymbiFlow/sphinxcontrib-hdl-diagrams',
     packages=find_packages(),
     license="Apache 2.0",
-    keywords='Verilog nMigen RTLIL yosys HDL sphinx sphinx-extension netlistsvg FPGA',
+    keywords='Verilog sphinx sphinx-extension netlistsvg FPGA',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Sphinx :: Extension',
         'Intended Audience :: Developers',
-        #'License :: OSI Approved :: Apache 2.0',
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3.5',

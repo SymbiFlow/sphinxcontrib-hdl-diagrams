@@ -17,7 +17,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-# Sphinx Verilog documentation build configuration file, created by
+# Sphinx HDL Diagrams documentation build configuration file, created by
 # sphinx-quickstart on Mon Feb  5 11:04:37 2018.
 #
 # This file is execfile()d with the current directory set to its
@@ -55,7 +55,7 @@ extensions = [
     'sphinx.ext.imgmath',
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
-    'sphinxcontrib_verilog_diagrams',
+    'sphinxcontrib_hdl_diagrams',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -69,7 +69,7 @@ source_suffix = ['.rst']
 master_doc = 'index'
 
 # General information about the project.
-project = u'Sphinx Verilog Diagrams'
+project = u'Sphinx HDL Diagrams'
 copyright = u'2018, SymbiFlow Team'
 author = u'SymbiFlow Team'
 
@@ -79,7 +79,7 @@ if not on_rtd:
     html_context = {
         "display_github": True,  # Integrate GitHub
         "github_user": "SymbiFlow",  # Username
-        "github_repo": "sphinxcontrib-verilog-diagrams",  # Repo name
+        "github_repo": "sphinxcontrib-hdl-diagrams",  # Repo name
         "github_version": "master",  # Version
         "conf_py_path": "/doc/",
     }
@@ -145,7 +145,7 @@ html_theme_options = {
     'header_links': [
         ('Home', 'index', False, 'home'),
         ("GitHub",
-            "https://github.com/SymbiFlow/sphinxcontrib-verilog-diagrams",
+            "https://github.com/SymbiFlow/sphinxcontrib-hdl-diagrams",
             True, 'link')
     ],
 
@@ -196,7 +196,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'sphinxcontrib-verilog-diagrams'
+htmlhelp_basename = 'sphinxcontrib-hdl-diagrams'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -223,8 +223,8 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (
-        master_doc, 'SphinxVerilogDiagrams.tex',
-        u'Sphinx Verilog Diagram Documentation', u'SymbiFlow Team', 'manual'),
+        master_doc, 'SphinxHDLDiagrams.tex',
+        u'Sphinx HDL Diagram Documentation', u'SymbiFlow Team', 'manual'),
 ]
 
 # -- Options for manual page output ---------------------------------------
@@ -232,7 +232,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'sphinx-verilog', u'Sphinx Verilog Diagrams Documentation',
+    (master_doc, 'sphinx-hdl-diagrams', u'Sphinx HDL Diagrams Documentation',
         [author], 1)
 ]
 
@@ -243,9 +243,9 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (
-        master_doc, 'SphinxVerilogDiagrams',
-        u'Sphinx Verilog Diagrams Documentation', author,
-        'SphinxVerilogDiagrams', 'Sphinx Extension which generates various types of diagrams from Verilog code.',
+        master_doc, 'SphinxHDLDiagrams',
+        u'Sphinx HDL Diagrams Documentation', author,
+        'SphinxHDLDiagrams', 'Sphinx Extension which generates various types of diagrams from HDL code.',
         'Miscellaneous'),
 ]
 

@@ -13,16 +13,16 @@ Here is the fragment of the ``conf.py`` script::
 
    verilog_diagram_skin = os.path.realpath('skin-purple.svg')
 
-The following ``verilog-diagram`` diagram should be placed in an RST file::
+The following ``hdl-diagram`` diagram should be placed in an RST file::
 
-   .. verilog-diagram:: adder.v
+   .. hdl-diagram:: adder.v
       :type: netlistsvg
       :module: ADDER
 
 Below you can see the output of the directive. The diagram presented below
 should be black-purple.
 
-.. verilog-diagram:: adder.v
+.. hdl-diagram:: adder.v
    :type: netlistsvg
    :module: ADDER
 
@@ -30,16 +30,16 @@ Per Diagram Skin Setting
 ------------------------
 
 Per diagram skin setting is achieved by using the ``:skin:`` option with
-the ``verilog-diagram`` directive.
+the ``hdl-diagram`` directive.
 
-The following ``verilog-diagram`` directive should be placed in an RST file::
+The following ``hdl-diagram`` directive should be placed in an RST file::
 
-   .. verilog-diagram:: adder.v
+   .. hdl-diagram:: adder.v
       :type: netlistsvg
       :module: ADDER
       :skin: skin-yellow.svg
 
-.. verilog-diagram:: adder.v
+.. hdl-diagram:: adder.v
    :type: netlistsvg
    :module: ADDER
    :skin: skin-yellow.svg
@@ -54,9 +54,9 @@ It is possible to overwrite the global skin settings using the ``:skin:`` option
 To reset the skin setting to the default value, you can use the ``:skin: default``
 setting.
 
-The following ``verilog-diagram`` directive should be placed in an RST file::
+The following ``hdl-diagram`` directive should be placed in an RST file::
 
-   .. verilog-diagram:: adder.v
+   .. hdl-diagram:: adder.v
       :type: netlistsvg
       :module: ADDER
       :skin: default
@@ -64,7 +64,7 @@ The following ``verilog-diagram`` directive should be placed in an RST file::
 Below you can see the output of the directive. The diagram presented below
 should be black-white.
 
-.. verilog-diagram:: adder.v
+.. hdl-diagram:: adder.v
    :type: netlistsvg
    :module: ADDER
    :skin: default

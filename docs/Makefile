@@ -7,7 +7,7 @@ MAKEDIR := $(dir $(lastword $(MAKEFILE_LIST)))
 SPHINXOPTS      =
 SPHINXBUILD     = [ -e env/bin/activate ] && source env/bin/activate; sphinx-build
 SPHINXAUTOBUILD = [ -e env/bin/activate ] && source env/bin/activate; sphinx-autobuild
-SPHINXPROJ      = SphinxVerilog
+SPHINXPROJ      = SphinxContribHDLDiagramsDocs
 SOURCEDIR       = .
 BUILDDIR        = _build
 
