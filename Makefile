@@ -26,6 +26,9 @@ $(VERSION_PY):
 
 .PHONY: $(VERSION_PY)
 
+version:
+	$(MAKE) $(VERSION_PY)
+
 version-clean:
 	rm -f $(VERSION_PY)
 
@@ -33,10 +36,8 @@ version-clean:
 
 clean: version-clean
 
-# Build and upload main package
-
-#PYPI_TEST = --repository-url https://test.pypi.org/legacy/
-PYPI_TEST = --repository testpypi
+# Build the package locally
+# -------------------------------------
 
 build: $(VERSION_PY) | $(CONDA_ENV_PYTHON)
 	$(IN_CONDA_ENV) python setup.py sdist bdist_wheel && twine check dist/*
@@ -47,15 +48,37 @@ build-clean:
 	find -name *.pyc -delete
 	find -name __pycache__ -delete
 
+.PHONY: build build-clean
+
+clean: build-clean
+
+# Upload the package to PyPi
+# -------------------------------------
+
+#PYPI_TEST = --repository-url https://test.pypi.org/legacy/
+#PYPI_TEST = --repository testpypi
+
 upload-test: build | $(CONDA_ENV_PYTHON)
 	$(IN_CONDA_ENV) twine upload ${PYPI_TEST}  dist/*
+
+.PHONY: upload-test
 
 upload: build | $(CONDA_ENV_PYTHON)
 	$(IN_CONDA_ENV) twine upload --verbose dist/*
 
-.PHONY: build build-clean upload upload-test
+.PHONY: upload
+
+# Tests
+# -------------------------------------
+
+test: $(VERSION_PY) | $(CONDA_ENV_PYTHON)
+	$(IN_CONDA_ENV) cd docs; make html
+	$(IN_CONDA_ENV) cd tests; make test
+
+.PHONY: test
 
 # Build and upload compatibility package
+# -------------------------------------
 
 COMPAT_PACKAGE_DIR = compat
 
@@ -68,22 +91,14 @@ build_compat-clean:
 	cd $(COMPAT_PACKAGE_DIR); find -name *.pyc -delete
 	cd $(COMPAT_PACKAGE_DIR); find -name __pycache__ -delete
 
+.PHONY: build_compat build_compat-clean
+
+clean: build_compat-clean
+
 upload_compat-test: build_compat | $(CONDA_ENV_PYTHON)
 	$(IN_CONDA_ENV) cd $(COMPAT_PACKAGE_DIR); twine upload ${PYPI_TEST}  dist/*
 
 upload_compat: build_compat | $(CONDA_ENV_PYTHON)
 	$(IN_CONDA_ENV) cd $(COMPAT_PACKAGE_DIR); twine upload --verbose dist/*
 
-.PHONY: build_compat build_compat-clean upload_compat-test upload_compat
-
-# Tests
-
-test: $(VERSION_PY) | $(CONDA_ENV_PYTHON)
-	$(IN_CONDA_ENV) cd docs; make html
-	$(IN_CONDA_ENV) cd tests; make test
-
-.PHONY: test
-
-# Cleanup
-
-clean: build-clean build_compat-clean
+.PHONY: upload_compat-test upload_compat
