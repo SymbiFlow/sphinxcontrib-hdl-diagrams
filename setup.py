@@ -52,14 +52,14 @@ install_requires = [
 setup(
     name='sphinxcontrib-hdl-diagrams',
     version=__version__,
-    description='Generate diagrams from HDL in Sphinx.',
+    author="SymbiFlow Authors",
+    author_email="symbiflow@lists.librecores.org",
+    license="Apache 2.0",
+    description="Generate diagrams from HDL in Sphinx.",
     long_description=readme,
     long_description_content_type="text/x-rst",
-    author="The SymbiFlow Authors",
-    author_email='symbiflow@lists.librecores.org',
     url='https://github.com/SymbiFlow/sphinxcontrib-hdl-diagrams',
     packages=find_packages(),
-    license="Apache 2.0",
     keywords='Verilog nMigen RTLIL yosys HDL sphinx sphinx-extension netlistsvg FPGA',
     classifiers=[
         'Development Status :: 4 - Beta',
