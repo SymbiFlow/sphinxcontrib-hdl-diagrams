@@ -1,5 +1,8 @@
 language: minimal
 
+git:
+  depth: false
+
 before_install:
     - make env
     - source env/conda/bin/activate sphinxcontrib-hdl-diagrams
