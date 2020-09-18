@@ -4,8 +4,11 @@ git:
   depth: false
 
 before_install:
-    - make env
-    - source env/conda/bin/activate sphinxcontrib-hdl-diagrams
+  - make version
+
+install:
+  - make env
+  - source env/conda/bin/activate sphinxcontrib-hdl-diagrams
 
 stages:
     - name:
@@ -55,10 +58,8 @@ jobs:
 
     - stage: Deploy
       name: "PyPI"
-      before_install: null
+      install: null
       before_deploy:
-        - make clean
-        - make sphinxcontrib_hdl_diagrams/version.py
         - sudo ln -sf /usr/bin/python3 /usr/bin/python
       deploy:
         provider: pypi

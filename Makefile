@@ -22,12 +22,15 @@ include third_party/make-env/conda.mk
 # Create a version.py file
 VERSION_PY = sphinxcontrib_hdl_diagrams/version.py
 $(VERSION_PY):
-	echo "__version__ = '$$(git describe | sed -e's/v\([0-9]\+\)\.\([0-9]\+\)-\([0-9]\+\)-g[0-9a-f]\+/\1.\2.post\3/')'" > $@
+	@echo "__version__ = '$$(git describe | sed -e's/v\([0-9]\+\)\.\([0-9]\+\)-\([0-9]\+\)-g[0-9a-f]\+/\1.\2.post\3/')'" > $@
 
 .PHONY: $(VERSION_PY)
 
 version:
-	$(MAKE) $(VERSION_PY)
+	@if $$(git rev-parse --is-shallow-repository); then git fetch --unshallow; fi
+	git fetch origin --tags
+	@$(MAKE) $(VERSION_PY)
+	@cat $(VERSION_PY)
 
 version-clean:
 	rm -f $(VERSION_PY)
