@@ -47,6 +47,7 @@ install_requires = [
     'docutils',
     'sphinx',
     'nmigen',
+    'yowasp_yosys'
 ]
 
 setup(
