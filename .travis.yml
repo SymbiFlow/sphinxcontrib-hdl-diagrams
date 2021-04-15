@@ -67,3 +67,6 @@ jobs:
         distributions: sdist bdist_wheel
         skip_existing: true
         edge: true # opt in to dpl v2
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
