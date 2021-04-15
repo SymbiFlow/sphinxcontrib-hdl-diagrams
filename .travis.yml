@@ -1,4 +1,5 @@
 language: minimal
+dist: bionic
 
 git:
   depth: false
@@ -67,3 +68,15 @@ jobs:
         distributions: sdist bdist_wheel
         skip_existing: true
         edge: true # opt in to dpl v2
+
+    - stage: Deploy
+      name: "Test HTMLs"
+      before_deploy:
+        - bash $TRAVIS_BUILD_DIR/.github/deploy_test_preview.sh
+      deploy:
+        - provider: pages
+          skip_cleanup: true
+          token: $GITHUB_PAGES_TOKEN
+          local_dir: $TRAVIS_BUILD_DIR/tests/gh-pages
+          on:
+            branch: master
