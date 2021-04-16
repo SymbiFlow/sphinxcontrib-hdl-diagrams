@@ -17,7 +17,7 @@ REQUIREMENTS_FILE := requirements.txt
 # https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
 ENVIRONMENT_FILE := environment.yml
 
-include third_party/make-env/conda.mk
+-include third_party/make-env/conda.mk
 
 # Create a version.py file
 VERSION_PY = sphinxcontrib_hdl_diagrams/version.py
