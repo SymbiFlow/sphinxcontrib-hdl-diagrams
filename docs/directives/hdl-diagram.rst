@@ -12,7 +12,7 @@ The `hdl-diagram` RST directive can be used to generate a diagram from HDL code 
 
 .. note::
 
-   The `verilog-diagram` directive is kept as an alias of this directive for 
+   The `verilog-diagram` directive is kept as an alias of this directive for
    compatibility purposes.
 
 Options
@@ -117,8 +117,9 @@ RST Directive
 Result
 ******
 
-.. hdl-diagram:: ../code/verilog/dff.v
-   :type: yosys-bb
+..
+  .. hdl-diagram:: ../code/verilog/dff.v
+     :type: yosys-bb
 
 
 Yosys AIG Diagram
@@ -137,8 +138,9 @@ RST Directive
 Result
 ******
 
-.. hdl-diagram:: ../code/verilog/dff.v
-   :type: yosys-aig
+..
+  .. hdl-diagram:: ../code/verilog/dff.v
+     :type: yosys-aig
 
 
 NetlistSVG Diagram

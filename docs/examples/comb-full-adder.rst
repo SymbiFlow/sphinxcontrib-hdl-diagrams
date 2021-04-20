@@ -40,9 +40,10 @@ RST Directive
 Result
 ******
 
-.. hdl-diagram:: ../code/verilog/adder.v
-   :type: yosys-bb
-   :module: ADDER
+..
+  .. hdl-diagram:: ../code/verilog/adder.v
+     :type: yosys-bb
+     :module: ADDER
 
 
 Yosys AIG Diagram
@@ -62,9 +63,10 @@ RST Directive
 Result
 ******
 
-.. hdl-diagram:: ../code/verilog/adder.v
-   :type: yosys-aig
-   :module: ADDER
+..
+  .. hdl-diagram:: ../code/verilog/adder.v
+     :type: yosys-aig
+     :module: ADDER
 
 
 NetlistSVG Diagram
