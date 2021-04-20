@@ -1,0 +1,72 @@
+name: MSYS2
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+
+  win-build:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include: [
+          {icon: '🟪', installs: 'MINGW32', arch: i686   },
+          {icon: '🟦', installs: 'MINGW64', arch: x86_64 },
+        ]
+    name: '${{ matrix.icon }} Docs · ${{ matrix.installs }}'
+    env:
+      MINGW_ARCH: ${{ matrix.installs }}
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+
+    - name: '⚙️ git config'
+      run: git config --global core.autocrlf input
+      shell: bash
+
+    - name: '🧰 Checkout'
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: '⚙️ Install netlistsvg'
+      shell: bash
+      run: |
+        npm install -g netlistsvg
+        echo "$(dirname $(which node))" >> extra.paths
+        echo "$(dirname $(which netlistsvg))" >> extra.paths
+
+    - name: '${{ matrix.icon }} Setup MSYS2'
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem:  ${{ matrix.installs }}
+        update: true
+        install: >-
+          gcc
+          git
+          make
+          mingw-w64-${{ matrix.arch }}-python-lxml
+          mingw-w64-${{ matrix.arch }}-python-pip
+          mingw-w64-${{ matrix.arch }}-python-sphinx
+          mingw-w64-${{ matrix.arch }}-python-wheel
+          mingw-w64-${{ matrix.arch }}-yosys
+
+    - name: '🐍 Install sphinx_symbiflow_theme'
+      run: pip install -U nmigen git+http://github.com/SymbiFlow/sphinx_symbiflow_theme.git@master#egg=sphinx_symbiflow_theme
+
+    - name: '📓 Build Docs'
+      run: |
+        #while read item; do PATH="$PATH:$(cygpath -u "$item")"; done <<<$(sed 's#\\#/#g' extra.paths)
+        PATH="$PATH:/c/Program Files/nodejs/:/c/npm/prefix/"
+        make -C docs html
+
+    - name: '📤 Upload artifact: docs/_build/html'
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.installs }}-docs
+        path: docs/_build/html
