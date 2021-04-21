@@ -243,14 +243,11 @@ def run_yosys(src, cmd, yosys='yowasp'):
         ycmd = ["-q", "-p", "{}".format(cmd), src]
         print("Running YoWASP yosys: {}".format(ycmd))
         yowasp_yosys.run_yosys(ycmd)
-    elif yosys == 'system':
-        ycmd = "yosys -p '{cmd}' {src}".format(src=src, cmd=cmd)
-        print("Running yosys: {}".format(ycmd))
-        subprocess.check_output(ycmd, shell=True)
-    else:
-        ycmd = "{yosys} -p '{cmd}' {src}".format(yosys=yosys, src=src, cmd=cmd)
-        print("Running yosys: {}".format(ycmd))
-        subprocess.check_output(ycmd, shell=True)
+        return
+
+    ycmd = [f"{'yosys' if yosys == 'system' else yosys}", '-p', f"{cmd}", f"{src}"]
+    print(f"Running yosys: {ycmd}")
+    subprocess.check_output(ycmd, shell=True)
 
 
 def diagram_yosys(ipath, opath, module='top', flatten=False,
