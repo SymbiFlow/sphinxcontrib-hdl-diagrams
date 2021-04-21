@@ -26,6 +26,8 @@ SPHINXPROJ      = SphinxContribHDLDiagramsDocs
 SOURCEDIR       = .
 BUILDDIR        = _build
 
+ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees -T -D language=en $(SPHINXOPTS) .
+
 # Put it first so that "make" without argument is like "make help".
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
@@ -48,6 +50,9 @@ env:
 	source env/bin/activate; conda config --system --add envs_dirs $(PWD)/env/envs
 	source env/bin/activate; conda config --system --add pkgs_dirs $(PWD)/env/pkgs
 	source env/bin/activate; conda env update --name base --file ../environment.yml
+
+html:
+	sphinx-build -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 
 .PHONY: env
 
