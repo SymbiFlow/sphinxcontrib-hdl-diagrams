@@ -58,6 +58,8 @@ extensions = [
     'sphinxcontrib_hdl_diagrams',
 ]
 
+hdl_diagram_yosys = 'system'
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
