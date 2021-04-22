@@ -3,14 +3,14 @@ Sphinx HDL Diagrams
 
 sphinx-hdl-diagrams is an extension to Sphinx to make it easier to write
 nice documentation from HDL source files, in the form of Verilog, nMigen,
-or RTLIL code.
+RTLIL, or VHDL code.
 
 You use the |hdl-diagram|_ RST directive to generate various styles of
 diagrams from HDL code.
 
-Most of the time there will be a license header at the top of source code, 
-which we might not want to show in the documentation. 
-This extension also provides the |no-license|_ RST directive which works exactly 
+Most of the time there will be a license header at the top of source code,
+which we might not want to show in the documentation.
+This extension also provides the |no-license|_ RST directive which works exactly
 like the `.. literalinclude` directive, but the `lines` option is overridden
 to only show the lines after the license header.
 
@@ -56,6 +56,8 @@ conda `environment.yml <https://github.com/SymbiFlow/sphinxcontrib-hdl-diagrams/
 
 - `yosys <https://github.com/YosysHQ/yosys>`_ (required)
 - `netlistsvg <https://github.com/nturley/netlistsvg>`_ (optional)
+- `GHDL <https://github.com/ghdl/ghdl>`_ (required for VHDL)
+- `ghdl-yosys-plugin <https://github.com/ghdl/ghdl-yosys-plugin>`_ (required for VHDL)
 
 Usage
 -----
@@ -106,6 +108,7 @@ So, refer to `literalinclude` for the available options.
    :maxdepth: 1
    :glob:
    :hidden:
-   
+
+   configuration/index
    directives/index
    examples/index

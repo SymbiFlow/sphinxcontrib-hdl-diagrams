@@ -30,7 +30,7 @@ sphinxcontrib-hdl-diagrams
 ----
 
 Sphinx Extension which generates various types of diagrams from HDL code, supporting Verilog,
-nMigen and RTLIL.
+nMigen, RTLIL, and VHDL.
 
 `sphinxcontrib-hdl-diagrams <https://github.com/SymbiFlow/sphinxcontrib-hdl-diagrams>`_
 is a Sphinx extension to make it easier to write nice documentation from
@@ -84,19 +84,19 @@ Required
 .. |yosys| replace:: ``yosys``
 .. _yosys: https://github.com/YosysHQ/yosys
 
-By default, ``verilog-diagram`` uses the ``yowasp-yosys`` package provided in PyPI.
+By default, ``hdl-diagram`` uses the ``yowasp-yosys`` package provided in PyPI.
 It can be installed by running ``pip install -r requirements.txt``.
 However, you could also use Yosys that is installed on your system,
-or point to the specific Yosys binary using ``verilog_diagram_yosys`` variable
+or point to the specific Yosys binary using ``hdl_diagram_yosys`` variable
 in the Sphinx ``conf.py`` file:
 
 To use Yosys that is available in your system, use the following setting::
 
-    verilog_diagram_yosys = "system"
+    hdl_diagram_yosys = "system"
 
 If you want to point to the specific Yosys binary, provide the path to the program::
 
-    verilog_diagram_yosys = "<path-to-Yosys>"
+    hdl_diagram_yosys = "<path-to-Yosys>"
 
 Optional
 ~~~~~~~~
@@ -105,6 +105,27 @@ Optional
 
 .. |netlistsvg| replace:: ``netlistsvg``
 .. _netlistsvg: https://github.com/nturley/netlistsvg
+
+* |ghdl|_
+
+.. |ghdl| replace:: ``ghdl``
+.. _ghdl: https://github.com/ghdl/ghdl
+
+GHDL and ghdl-yosys-plugin are required for VHDL support. If ghdl-yosys-plugin is built into Yosys,
+add this configuration option to let Yosys know::
+
+    hdl_diagram_ghdl = "built-in"
+
+Otherwise, to load GHDL as a runtime module, set this configuration option to::
+
+    hdl_diagram_ghdl = "module"
+
+Which will pass ``-m ghdl`` to Yosys when calling it. Similarly, setting this to the path of a
+ghdl-yosys-plugin shared library will also work.
+
+Unfortunately, at this time GHDL and ghdl-yosys-plugin aren't supported by YoWASP. However, we'd
+love to have it available. Are you aware of some proof-of-concept linking WASM compiled from both
+C++ and Ada? Do you want to give it a try? Let us know!
 
 Usage
 -----
