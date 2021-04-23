@@ -165,7 +165,9 @@ class HDLDiagram(Directive):
         "hdl_diagram_output_format": ["svg", "png"],
         "hdl_diagram_skin": ["default"],  # or path
         "hdl_diagram_yosys_script": ["default"],  # or path
-        "hdl_diagram_yosys": ["yowasp", "system"]  # or path
+        "hdl_diagram_yosys": ["yowasp", "system"],  # or path
+        "hdl_diagram_ghdl": ["built-in", "module"],  # or path
+        "hdl_diagram_ghdl_std": ["87", "93", "93c", "00", "02", "08"]
     }
 
     def run(self):
@@ -237,18 +239,20 @@ class HDLDiagram(Directive):
         return [node]
 
 
-def run_yosys(src, cmd, yosys='yowasp'):
+def run_yosys(src, cmd, yosys='yowasp', options=''):
     if yosys == 'yowasp':
         import yowasp_yosys
         ycmd = ["-q", "-p", "{}".format(cmd), src]
+        if options != '':
+            ycmd.insert(0, options)
         print("Running YoWASP yosys: {}".format(ycmd))
         yowasp_yosys.run_yosys(ycmd)
     elif yosys == 'system':
-        ycmd = "yosys -p '{cmd}' {src}".format(src=src, cmd=cmd)
+        ycmd = "yosys {options} -p '{cmd}' {src}".format(options=options, src=src, cmd=cmd)
         print("Running yosys: {}".format(ycmd))
         subprocess.check_output(ycmd, shell=True)
     else:
-        ycmd = "{yosys} -p '{cmd}' {src}".format(yosys=yosys, src=src, cmd=cmd)
+        ycmd = "{yosys} {options} -p '{cmd}' {src}".format(options=options, yosys=yosys, src=src, cmd=cmd)
         print("Running yosys: {}".format(ycmd))
         subprocess.check_output(ycmd, shell=True)
 
@@ -372,6 +376,28 @@ def nmigen_to_rtlil(fname, oname):
     cmd = "{python} {script} > {output}".format(python=sys.executable, script=fname, output=oname)
     subprocess.run(cmd, shell=True, check=True)
 
+def vhdl_to_verilog(fname, oname, module, ghdl, ghdl_std, yosys):
+    assert os.path.exists(fname)
+
+    if ghdl == "module":
+        yosys_opt = "-m ghdl "
+    elif ghdl == "built-in":
+        yosys_opt = ""
+    elif os.path.exists(ghdl):
+        yosys_opt = "-m '{}'".format(ghdl)
+    else:
+        raise HDLDiagramError("hdl_diagram_ghdl can only be \"module\", \"built-in\", or "
+                              "a path to a ghdl-yosys-plugin shared library, not '{}'".format(ghdl))
+
+    output_dir = os.path.dirname(oname)
+    os.makedirs(output_dir, exist_ok=True)
+    cmd = "ghdl --std={std} {input} -e {module}; write_verilog {output}".format(
+        std=ghdl_std,
+        module=module,
+        input=fname,
+        output=oname
+    )
+    run_yosys('', cmd, yosys, options=yosys_opt)
 
 def render_diagram(self, code, options, format, skin, yosys_script):
     # type: (nodes.NodeVisitor, unicode, Dict, unicode, unicode) -> Tuple[unicode, unicode]
@@ -384,6 +410,8 @@ def render_diagram(self, code, options, format, skin, yosys_script):
     relfn = posixpath.join(self.builder.imgpath, fname)
     outfn = path.join(self.builder.outdir, self.builder.imagedir, fname)
 
+    yosys = self.builder.config.hdl_diagram_yosys
+
     if source_ext == '.py':
         module = 'top'
         ilfn = path.join(self.builder.outdir, self.builder.imagedir, options['outname'] + '.il')
@@ -391,9 +419,17 @@ def render_diagram(self, code, options, format, skin, yosys_script):
         source_path = ilfn
     elif source_ext == '.il' or source_ext == '.v':
         module = options['module']
+    elif source_ext == '.vhd' or source_ext == '.vhdl':
+        if yosys == "yowasp":
+            raise HDLDiagramError("Cannot use YoWASP for VHDL (yet)")
+        module = options['module']
+        ilfn = path.join(self.builder.outdir, self.builder.imagedir, options['outname'] + '.v')
+        vhdl_to_verilog(source_path, ilfn, module,
+            self.builder.config.hdl_diagram_ghdl, self.builder.config.hdl_diagram_ghdl_std, yosys)
+        source_path = ilfn
     else:
         raise HDLDiagramError("hdl_diagram_code file extension must be one of '.v', "
-                              "'.il', or '.py', but is %r" % source_ext)
+                              "'.il', '.py', '.vhd', or '.vhdl', but is %r" % source_ext)
 
     if path.isfile(outfn):
         print('Exiting file:', outfn)
@@ -404,7 +440,6 @@ def render_diagram(self, code, options, format, skin, yosys_script):
     yosys_script = options['yosys_script'] if options['yosys_script'] is not None else yosys_script
     skin = options['skin'] if options['skin'] is not None else skin
 
-    yosys = self.builder.config.hdl_diagram_yosys
     yosys_options = HDLDiagram.global_variable_options["hdl_diagram_yosys"]
     if yosys not in yosys_options and not os.path.exists(yosys):
         raise HDLDiagramError("Yosys not found!")
@@ -441,6 +476,9 @@ def render_diagram_html(
         self, node, code, options, imgcls=None, alt=None):
     # type: (nodes.NodeVisitor, hdl_diagram, unicode, Dict, unicode, unicode, unicode) -> Tuple[unicode, unicode]  # NOQA
 
+    diagram_error = False
+    diagram_error_message = ""
+
     yosys_script = self.builder.config.hdl_diagram_yosys_script
     if yosys_script != 'default' and not path.exists(yosys_script):
         raise HDLDiagramError("Yosys script file {} does not exist! Change hdl_diagram_yosys_script variable".format(yosys_script))
@@ -457,9 +495,16 @@ def render_diagram_html(
         fname, outfn = render_diagram(self, code, options, format, skin, yosys_script)
     except HDLDiagramError as exc:
         logger.warning('hdl_diagram code %r: ' % code + str(exc))
-        raise nodes.SkipNode
+        diagram_error = True
+        diagram_error_message = str(exc)
+        # raise nodes.SkipNode
 
-    if fname is None:
+    if diagram_error:
+        self.body.append('<div class="admonition warning">'
+            '<paragraph class="admonition-title">{title}: </paragraph>'
+            '<paragraph>hdl_diagram code <code>{file}</code>: {message}</paragraph>'
+            '</div>'.format(title="Warning", file=code, message=diagram_error_message))
+    elif fname is None:
         self.body.append(self.encode(code))
     else:
         if alt is None:
@@ -568,4 +613,6 @@ def setup(app):
     app.add_config_value('hdl_diagram_skin', 'default', 'html')
     app.add_config_value('hdl_diagram_yosys_script', 'default', 'html')
     app.add_config_value('hdl_diagram_yosys', 'yowasp', 'html')
+    app.add_config_value('hdl_diagram_ghdl', 'built-in', 'html')
+    app.add_config_value('hdl_diagram_ghdl_std', '08', 'html')
     return {'version': '1.0', 'parallel_read_safe': True}
