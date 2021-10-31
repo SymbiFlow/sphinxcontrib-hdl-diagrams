@@ -1,0 +1,91 @@
+# Copyright (C) 2020-2021  The SymbiFlow Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name: CI
+
+on:
+  push:
+  pull_request:
+  # Run CI daily even without code changes to ensure tests pass with
+  # updated dependencies. See:
+  # * https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#scheduled-events
+  # * https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07
+  schedule:
+    - cron: '0 0 * * *'
+  # Allow triggering a CI run from the web UI. See:
+  # * https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow
+  # * https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    strategy:
+      fail-fast: false
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: 🧰 Repository Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # Get complete history
+
+    - name: 🛠️ Install dependencies
+      run: |
+        make env
+        make version
+
+    - name: "Test :skin: option"
+      run: |
+        source env/conda/bin/activate sphinxcontrib-hdl-diagrams
+        cd tests
+        python -m unittest test.TestSkins
+
+    - name: "Test :yosys_script: option"
+      run: |
+        source env/conda/bin/activate sphinxcontrib-hdl-diagrams
+        cd tests
+        python3 -m unittest test.TestYosysScript
+
+    - name: "Test :flatten: option"
+      run: |
+        source env/conda/bin/activate sphinxcontrib-hdl-diagrams
+        cd tests
+        python3 -m unittest test.TestFlatten
+
+    - name: "Test verilog_diagram_yosys config variable"
+      run: |
+        source env/conda/bin/activate sphinxcontrib-hdl-diagrams
+        cd tests
+        python3 -m unittest test.TestYosysType
+
+    - name: "Test nMigen input format"
+      run: |
+        source env/conda/bin/activate sphinxcontrib-hdl-diagrams
+        cd tests
+        python3 -m unittest test.TestNMigen
+
+    - name: "Test RTLIL input format"
+      run: |
+        source env/conda/bin/activate sphinxcontrib-hdl-diagrams
+        cd tests
+        python3 -m unittest test.TestRTLIL
+
+    - name: "Test compatibility package"
+      run: |
+        source env/conda/bin/activate sphinxcontrib-hdl-diagrams
+        cd tests
+        python3 -m unittest test.TestCompat
