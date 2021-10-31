@@ -25,7 +25,12 @@ REQUIREMENTS_FILE := requirements.txt
 # https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
 ENVIRONMENT_FILE := environment.yml
 
-include third_party/make-env/conda.mk
+# Rule to checkout the git submodule if it wasn't cloned.
+$(TOP_DIR)/third_party/make-env/conda.mk: $(TOP_DIR)/.gitmodules
+	cd $(TOP_DIR); git submodule update --init third_party/make-env
+	touch $(TOP_DIR)/third_party/make-env/conda.mk
+
+-include $(TOP_DIR)/third_party/make-env/conda.mk
 
 # Create a version.py file
 VERSION_PY = sphinxcontrib_hdl_diagrams/version.py
@@ -45,7 +50,7 @@ version-clean:
 
 .PHONY: version-clean
 
-clean: version-clean
+clean:: version-clean
 
 # Build the package locally
 # -------------------------------------
@@ -61,7 +66,7 @@ build-clean:
 
 .PHONY: build build-clean
 
-clean: build-clean
+clean:: build-clean
 
 # Upload the package to PyPi
 # -------------------------------------
@@ -104,7 +109,7 @@ build_compat-clean:
 
 .PHONY: build_compat build_compat-clean
 
-clean: build_compat-clean
+clean:: build_compat-clean
 
 upload_compat-test: build_compat | $(CONDA_ENV_PYTHON)
 	$(IN_CONDA_ENV) cd $(COMPAT_PACKAGE_DIR); twine upload ${PYPI_TEST}  dist/*
