@@ -16,7 +16,7 @@
 
 name: sphinxcontrib-hdl-diagrams
 channels:
-- symbiflow
+- LiteX-Hub # https://github.com/hdl/conda-eda
 - conda-forge
 - defaults
 dependencies:
