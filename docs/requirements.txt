@@ -1,4 +1,4 @@
-git+http://github.com/SymbiFlow/sphinx_symbiflow_theme.git@master#egg=sphinx_symbiflow_theme
+#git+http://github.com/SymbiFlow/sphinx_symbiflow_theme.git@master#egg=sphinx_symbiflow_theme
 
 docutils
 sphinx
