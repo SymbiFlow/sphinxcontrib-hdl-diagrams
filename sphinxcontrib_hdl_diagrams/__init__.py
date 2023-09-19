@@ -373,9 +373,17 @@ def nmigen_to_rtlil(fname, oname):
     subprocess.run(cmd, shell=True, check=True)
 
 
-def render_diagram(self, code, options, format, skin, yosys_script):
+def render_diagram(self, code, options, format):
     # type: (nodes.NodeVisitor, unicode, Dict, unicode, unicode) -> Tuple[unicode, unicode]
     """Render hdl code into a PNG or SVG output file."""
+
+    yosys_script = self.builder.config.hdl_diagram_yosys_script
+    if yosys_script != 'default' and not path.exists(yosys_script):
+        raise HDLDiagramError("Yosys script file {} does not exist! Change hdl_diagram_yosys_script variable".format(yosys_script))
+
+    skin = self.builder.config.hdl_diagram_skin
+    if skin != 'default' and not path.exists(skin):
+        raise HDLDiagramError("Skin file {} does not exist! Change hdl_diagram_skin variable".format(skin))
 
     source_path = code
     source_fn, source_ext = os.path.splitext(source_path)
@@ -422,13 +430,18 @@ def render_diagram(self, code, options, format, skin, yosys_script):
             yosys_script=yosys_script,
             yosys=yosys)
     elif diagram_type == 'netlistsvg':
+        tmpfile = outfn + '.pdf' if format == 'pdf' else outfn
         diagram_netlistsvg(
             source_path,
-            outfn,
+            tmpfile,
             module=options['module'],
             flatten=options['flatten'],
             skin=skin,
             yosys=yosys)
+        if format == 'pdf':
+            inkscapecmd = ['inkscape', tmpfile, '--export-type=pdf', '-o', outfn]
+            print("Running: {}".format(subprocess.list2cmdline(inkscapecmd)))
+            subprocess.check_output(inkscapecmd)
     else:
         raise Exception('Invalid diagram type "%s"' % diagram_type)
         # raise self.severe(\n' %
@@ -441,20 +454,12 @@ def render_diagram_html(
         self, node, code, options, imgcls=None, alt=None):
     # type: (nodes.NodeVisitor, hdl_diagram, unicode, Dict, unicode, unicode, unicode) -> Tuple[unicode, unicode]  # NOQA
 
-    yosys_script = self.builder.config.hdl_diagram_yosys_script
-    if yosys_script != 'default' and not path.exists(yosys_script):
-        raise HDLDiagramError("Yosys script file {} does not exist! Change hdl_diagram_yosys_script variable".format(yosys_script))
-
-    skin = self.builder.config.hdl_diagram_skin
-    if skin != 'default' and not path.exists(skin):
-        raise HDLDiagramError("Skin file {} does not exist! Change hdl_diagram_skin variable".format(skin))
-
     format = self.builder.config.hdl_diagram_output_format
     try:
         if format not in ('png', 'svg'):
             raise HDLDiagramError("hdl_diagram_output_format must be one of 'png', "
                                   "'svg', but is %r" % format)
-        fname, outfn = render_diagram(self, code, options, format, skin, yosys_script)
+        fname, outfn = render_diagram(self, code, options, format)
     except HDLDiagramError as exc:
         logger.warning('hdl_diagram code %r: ' % code + str(exc))
         raise nodes.SkipNode
