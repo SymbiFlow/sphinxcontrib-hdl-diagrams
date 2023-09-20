@@ -29,5 +29,10 @@ sphinx:
 formats:
  - htmlzip
 
+build:
+  os: ubuntu-22.04
+  tools:
+    python: "miniconda3-4.7"
+
 conda:
   environment: environment.yml
