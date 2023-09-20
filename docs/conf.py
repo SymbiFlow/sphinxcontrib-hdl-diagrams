@@ -136,12 +136,12 @@ html_theme_options = {
     # red, pink, purple, deep-purple, indigo, blue, light-blue, cyan,
     # teal, green, light-green, lime, yellow, amber, orange, deep-orange,
     # brown, grey, blue-grey, white
-    'color_primary': 'deep-purple',
+    #'color_primary': 'deep-purple',
 
     # Accent colors:
     # red, pink, purple, deep-purple, indigo, blue, light-blue, cyan,
     # teal, green, light-green, lime, yellow, amber, orange, deep-orange
-    'color_accent': 'indigo',
+    #'color_accent': 'indigo',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
