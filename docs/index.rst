@@ -29,13 +29,13 @@ Python 3.5+ is required.
 
 .. code-block:: bash
 
-   pip install sphinxcontrib-hdl-diagrams
+   pip install sphinxcontrib-verilog-diagrams
 
 Or,
 
 .. code-block:: bash
 
-   python3 -m pip install sphinxcontrib-hdl-diagrams
+   python3 -m pip install sphinxcontrib-verilog-diagrams
 
 Sphinx integration
 ~~~~~~~~~~~~~~~~~~
