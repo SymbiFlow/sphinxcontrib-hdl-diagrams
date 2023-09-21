@@ -242,7 +242,10 @@ def run_yosys(src, cmd, yosys='yowasp'):
         import yowasp_yosys
         ycmd = ["-q", "-p", "{}".format(cmd), src]
         print("Running YoWASP yosys: {}".format(ycmd))
-        yowasp_yosys.run_yosys(ycmd)
+        returncode = yowasp_yosys.run_yosys(ycmd)
+        if returncode != 0:
+            raise subprocess.CalledProcessError(returncode, "yowasp_yosys")
+
     elif yosys == 'system':
         ycmd = "yosys -p '{cmd}' {src}".format(src=src, cmd=cmd)
         print("Running yosys: {}".format(ycmd))
