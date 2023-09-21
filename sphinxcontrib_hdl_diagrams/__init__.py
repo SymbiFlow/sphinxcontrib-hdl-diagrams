@@ -59,6 +59,17 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
+import subprocess
+
+def run_quietly(cmd):
+    print("Running: {}".format(subprocess.list2cmdline(cmd)))
+    try:
+        result = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Command {subprocess.list2cmdline(cmd)} failed with error {e.returncode}:")
+        print(e.stdout, file=sys.stderr)
+        raise
+
 class HDLDiagramError(SphinxError):
     category = 'HDLDiagram error'
 
@@ -297,8 +308,12 @@ def diagram_yosys(ipath, opath, module='top', flatten=False,
         # somehow yowasp_yosys fails to execute `dot` to convert the dot file to svg,
         # which works on native yosys, perhaps a limitation with wasm
         svgdata = subprocess.check_output(["dot", "-Tsvg", "{}.dot".format(oprefix)])
-        with open("{}.svg".format(oprefix), "wb") as img:
+        tmpfile = "{}.svg".format(oprefix)
+        with open(tmpfile, "wb") as img:
             img.write(svgdata)
+
+        if tmpfile != opath:
+            convert(tmpfile, opath)
 
     assert path.exists(opath), 'Output file {} was not created!'.format(opath)
     print('Output file created: {}'.format(opath))
@@ -375,6 +390,11 @@ def nmigen_to_rtlil(fname, oname):
     cmd = "{python} {script} > {output}".format(python=sys.executable, script=fname, output=oname)
     subprocess.run(cmd, shell=True, check=True)
 
+def convert(source, destination):
+    # convertcmd = ['inkscape', source, f"--export-filename={destination}"]
+    # convertcmd = ['convert', source, destination]
+    convertcmd = ['rsvg-convert', '-f', 'pdf', source, '-o', destination]
+    run_quietly(convertcmd)
 
 def render_diagram(self, code, options, format):
     # type: (nodes.NodeVisitor, unicode, Dict, unicode, unicode) -> Tuple[unicode, unicode]
@@ -433,7 +453,7 @@ def render_diagram(self, code, options, format):
             yosys_script=yosys_script,
             yosys=yosys)
     elif diagram_type == 'netlistsvg':
-        tmpfile = outfn + '.pdf' if format == 'pdf' else outfn
+        tmpfile = outfn if format == 'svg' else outfn + '.svg'
         diagram_netlistsvg(
             source_path,
             tmpfile,
@@ -441,10 +461,8 @@ def render_diagram(self, code, options, format):
             flatten=options['flatten'],
             skin=skin,
             yosys=yosys)
-        if format == 'pdf':
-            inkscapecmd = ['inkscape', tmpfile, '--export-type=pdf', '-o', outfn]
-            print("Running: {}".format(subprocess.list2cmdline(inkscapecmd)))
-            subprocess.check_output(inkscapecmd)
+        if format != 'svg':
+            convert(tmpfile, outfn)
     else:
         raise Exception('Invalid diagram type "%s"' % diagram_type)
         # raise self.severe(\n' %
