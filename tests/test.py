@@ -75,6 +75,12 @@ class TestBase(unittest.TestCase):
             shutil.copyfile(src, dst)
 
 
+def run_builds(sphinx_dirs):
+    for builder in ("html", "latex"):
+        with docutils_namespace():
+            app = Sphinx(buildername=builder, warningiserror=True, **sphinx_dirs)
+            app.build(force_all=True)
+
 ## Test cases
 
 class TestSkins(TestBase):
@@ -101,9 +107,7 @@ class TestSkins(TestBase):
 
         # Run the Sphinx
         sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
-        with docutils_namespace():
-            app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
-            app.build(force_all=True)
+        run_builds(sphinx_dirs)
 
 
 class TestYosysScript(TestBase):
@@ -130,9 +134,7 @@ class TestYosysScript(TestBase):
 
         # Run the Sphinx
         sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
-        with docutils_namespace():
-            app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
-            app.build(force_all=True)
+        run_builds(sphinx_dirs)
 
 
 class TestYosysType(TestBase):
@@ -204,9 +206,7 @@ class TestYosysType(TestBase):
 
         # Run the Sphinx
         sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
-        with docutils_namespace():
-            app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
-            app.build(force_all=True)
+        run_builds(sphinx_dirs)
 
 
 class TestNMigen(TestBase):
@@ -231,9 +231,7 @@ class TestNMigen(TestBase):
 
         # Run the Sphinx
         sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
-        with docutils_namespace():
-            app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
-            app.build(force_all=True)
+        run_builds(sphinx_dirs)
 
 
 class TestRTLIL(TestBase):
@@ -258,9 +256,7 @@ class TestRTLIL(TestBase):
 
         # Run the Sphinx
         sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
-        with docutils_namespace():
-            app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
-            app.build(force_all=True)
+        run_builds(sphinx_dirs)
 
 
 class TestCompat(TestBase):
@@ -288,9 +284,7 @@ extensions = [
 
         # Run the Sphinx
         sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
-        with docutils_namespace():
-            app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
-            app.build(force_all=True)
+        run_builds(sphinx_dirs)
 
 
 class TestFlatten(TestBase):
@@ -316,9 +310,7 @@ class TestFlatten(TestBase):
 
         # Run the Sphinx
         sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
-        with docutils_namespace():
-            app = Sphinx(buildername="html", warningiserror=True, **sphinx_dirs)
-            app.build(force_all=True)
+        run_builds(sphinx_dirs)
 
 
 if __name__ == '__main__':
