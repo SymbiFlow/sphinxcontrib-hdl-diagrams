@@ -23,7 +23,7 @@ from os import path
 from setuptools import setup, find_packages
 
 __dir__ = path.dirname(path.abspath(__file__))
-readme_file = path.join(__dir__, '../README.rst')
+readme_file = path.join(__dir__, 'README.rst')
 try:
     with open(readme_file) as f:
         readme = f.read()
@@ -39,8 +39,8 @@ install_requires = [
 
 setup(
     name='sphinxcontrib-verilog-diagrams',
-    version="0.1.0",
-    description='Generate diagrams from Verilog in Sphinx.',
+    version="0.1.1",
+    description='Compatibility stub for renamed to sphinxcontrib-hdl-diagrams.',
     long_description=readme,
     long_description_content_type="text/x-rst",
     author="The SymbiFlow Authors",
@@ -48,16 +48,7 @@ setup(
     url='https://github.com/SymbiFlow/sphinxcontrib-hdl-diagrams',
     packages=find_packages(),
     license="Apache 2.0",
-    keywords='Verilog sphinx sphinx-extension netlistsvg FPGA',
-    classifiers=[
-        'Development Status :: 4 - Beta',
-        'Framework :: Sphinx :: Extension',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Natural Language :: English',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Topic :: Text Processing',
-    ],
+    keywords='',
+    classifiers=[],
     install_requires=install_requires,
 )
