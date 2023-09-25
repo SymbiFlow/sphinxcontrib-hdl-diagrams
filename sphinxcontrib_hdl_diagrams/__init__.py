@@ -258,13 +258,11 @@ def run_yosys(src, cmd, yosys='yowasp'):
             raise subprocess.CalledProcessError(returncode, "yowasp_yosys")
 
     elif yosys == 'system':
-        ycmd = "yosys -p '{cmd}' {src}".format(src=src, cmd=cmd)
-        print("Running yosys: {}".format(ycmd))
-        subprocess.check_output(ycmd, shell=True)
+        ycmd = ["yosys", "-p", cmd, src]
+        run_quietly(ycmd)
     else:
-        ycmd = "{yosys} -p '{cmd}' {src}".format(yosys=yosys, src=src, cmd=cmd)
-        print("Running yosys: {}".format(ycmd))
-        subprocess.check_output(ycmd, shell=True)
+        ycmd = [yosys, '-p', cmd, src]
+        run_quietly(ycmd)
 
 
 def diagram_yosys(ipath, opath, module='top', flatten=False,
@@ -324,12 +322,11 @@ def run_netlistsvg(ipath, opath, skin='default'):
     if skin != 'default':
         assert path.exists(skin), 'Skin file missing: {}'.format(skin)
 
-    netlistsvg_cmd = "netlistsvg {ipath} -o {opath}".format(ipath=ipath, opath=opath)
+    netlistsvg_cmd = ["netlistsvg", ipath, '-o', opath]
     if skin != 'default':
-        netlistsvg_cmd += " --skin {skin}".format(skin=skin)
+        netlistsvg_cmd += ['--skin', skin]
 
-    print("Running netlistsvg:", netlistsvg_cmd)
-    subprocess.check_output(netlistsvg_cmd, shell=True)
+    run_quietly(netlistsvg_cmd)
 
     assert path.exists(opath), 'Output file {} was not created!'.format(opath)
     print('netlistsvg - Output file created: {}'.format(opath))
