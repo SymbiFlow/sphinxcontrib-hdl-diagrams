@@ -24,6 +24,7 @@ import unittest
 from jinja2 import Environment, FileSystemLoader
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
+import sphinx.errors
 
 HDL_DIAGRAMS_PATH = os.path.abspath("..")
 
@@ -136,6 +137,26 @@ class TestYosysScript(TestBase):
         sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
         run_builds(sphinx_dirs)
 
+    def test_yosys_verilog_error(self):
+        TEST_NAME = "test_yosys_script"
+        TEST_BUILD_DIR = os.path.join("build", self.TEST_CASE_NAME, TEST_NAME)
+        TEST_FILES = [
+            "test_yosys_script/test_yosys_script.rst",
+            "test_yosys_script/yosys_script.ys",
+            "test_yosys_script/yosys_script2.ys",
+            "code/verilog/adder.v"
+        ]
+        TEST_JINJA_DICT = {
+            "hdl_diagrams_path": "'{}'".format(HDL_DIAGRAMS_PATH),
+            "master_doc": "'test_yosys_script'",
+            "custom_variables": "hdl_diagram_yosys_script = os.path.realpath('yosys_script.ys')"
+        }
+
+        self.prepare_test(TEST_NAME, TEST_BUILD_DIR, TEST_FILES, **TEST_JINJA_DICT)
+
+        with self.assertRaises(sphinx.errors.SphinxError):
+            sphinx_dirs = get_sphinx_dirs(TEST_BUILD_DIR)
+            run_builds(sphinx_dirs)
 
 class TestYosysType(TestBase):
 
